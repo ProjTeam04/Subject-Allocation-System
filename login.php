@@ -36,10 +36,10 @@ if(!empty($username) || !empty($password)){
 <head>  
    <title>Login</title>
    <link rel="icon" href="annaunivlogo.webp">
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="stylelogin.css">
 </head>
 <body>
-   <br><br><br><br><br><img class="logo" src="annaunivlogo.webp"  alt="logo" width="200" height="160">
+   <br><br><br><img class="logo" src="annaunivlogo.webp"  alt="logo" width="200" height="160">
    <div class="center">
       <h1><center>Welcome! Login Here</center></h1>
          <form method="post"><center>
