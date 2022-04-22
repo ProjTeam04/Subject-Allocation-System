@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*Nav Bar*/
+.navbar  {
+    font-size: 120%;
+    background-color: #2691d9 ;
+}
+.nav-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.navbar a {
+    text-decoration: none;    
+}
+.navbar a:hover {
+    text-decoration: none;
+    background-color: black;
+    border-radius: 10px 10px;
+}
+.nav-item .button
+{
+    text-decoration: none;
+    background-color: black;
+    border-radius: 10px 10px;
+}
+/*Navbar Dropdown*/
+.navbar .dropdown-menu {
+    text-decoration: none;
+}
+
+.dropdown-menu .dropdown-item:hover{
+    background-color: #2691d9;
+}
+
+/*Popup Form*/
+.modal-title{
+    color: black;
+    font-size: 120%;
+    font-weight: 200;
+}
+.modal-footer,
+.modal-body {
+    color: black;
+    font-size: medium;
+    font-weight: 200;
+}
