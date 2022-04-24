@@ -20,7 +20,7 @@ if(!empty($username) || !empty($password)){
     {
     if ($row['email'] == $username && $row['createpass'] == $password ){
       /*echo "Login success!!! Welcome ".$row['email'];*/
-      header("Location: welcome.php");
+      header("Location: home.html");
       die();
     }else{
       echo"Invalid credentials!!";

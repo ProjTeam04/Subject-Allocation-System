@@ -104,7 +104,7 @@
                 <!---Home-->
                 <ul class="navbar-nav me-auto order-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="welcome.php">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                 <!---Regulation-->
                     <li class="nav-item dropdown">
@@ -113,9 +113,9 @@
                             Regulation
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">R-2013</a>
-                            <a class="dropdown-item" href="#">R-2017</a>
-                            <a class="dropdown-item" href="#">R-2021</a>
+                            <a class="dropdown-item" href="#">2013</a>
+                            <a class="dropdown-item" href="#">2017</a>
+                            <a class="dropdown-item" href="#">2021</a>
                         </div>
                     </li>
                 <!---Department-->
@@ -246,7 +246,7 @@
                     </ul>
                 <!--Search Bar-->
                 <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control mr-sm-2" type="text" name="search" value="<?php if(isset($_GET['search'])){ echo $_GET['search']; } ?>" placeholder="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
                 </form>
             </div>
@@ -276,7 +276,54 @@
                     $sql="SELECT * from subjects";
                     $result=mysqli_query($conn,$sql);
                     $number=1;
-                    if($result){
+                    if(isset($_GET['search'])){
+                        $filtervalues = $_GET['search'];
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' ";
+                        $qry_run = mysqli_query($conn,$qry);
+
+                        if(mysqli_num_rows($qry_run) > 0){
+                            while($row=mysqli_fetch_assoc($qry_run)){
+                            $sno=$row['sno'];
+                            $reg=$row['regulation'];
+                            $sem=$row['semester'];
+                            $dep=$row['department'];
+                            $cc=$row['coursecode'];
+                            $ct=$row['coursetitle'];
+                            $cat=$row['category'];
+                            $cp=$row['contactperiods'];
+                            $lec=$row['lectures'];
+                            $tut=$row['tutorials'];
+                            $prac=$row['practicals'];
+                            $cred=$row['credits'];
+                            echo'<tr>
+                            <th scope="row">'.$sno.'</th>
+                            <td>'.$reg.'</td>
+                            <td>'.$sem.'</td>
+                            <td>'.$dep.'</td>
+                            <td>'.$cc.'</td>
+                            <td>'.$ct.'</td>
+                            <td>'.$cat.'</td>
+                            <td>'.$cp.'</td>
+                            <td>'.$lec.'</td>
+                            <td>'.$tut.'</td>
+                            <td>'.$prac.'</td>
+                            <td>'.$cred.'</td>
+                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
+                                    
+                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid='.$sno.'" class="text-light">Delete</a></button>
+                            </td>
+                            </tr>';
+                            }
+                        }
+                        else{
+                            ?>
+                                <tr>
+                                    <td colspan="13">No record found</td>
+                                </tr>
+                            <?php
+                        }
+                    }
+                    else if($result){
                         while($row=mysqli_fetch_assoc($result)){
                             $sno=$row['sno'];
                             $reg=$row['regulation'];
@@ -303,9 +350,16 @@
                             <td>'.$tut.'</td>
                             <td>'.$prac.'</td>
                             <td>'.$cred.'</td>
-                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
+                            <td><button type="button" class="btn btn-primary editbutton">Update</button>                        
                             
-                            <div id="myeditmodel" class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid='.$sno.'" class="text-light">Delete</a></button>
+                            </td>
+                            </tr>';
+                            $number++;
+                        }
+                    }
+                    ?>
+                    <div id="myeditmodel" class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                         
                                 <div class="modal-content">
@@ -392,15 +446,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                                
-                                <button type="button" class="btn btn-danger"><a href="delete.php?deleteid='.$sno.'" class="text-light">Delete</a></button>
-                            </td>
-                            </tr>';
-                            $number++;
-                        }
-                    }
-                ?>
             </tbody>
         </table>
         <!--Course Table Ends-->       
