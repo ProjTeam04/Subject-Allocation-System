@@ -14,6 +14,7 @@
     }
     else{
         if(isset($_POST['submit'])){
+            $regulation = $_POST['regulation'];
             $semester = $_POST['semester'];
             $department = $_POST['department'];
             $coursecode = $_POST['coursecode'];
@@ -25,10 +26,10 @@
             $practicals = $_POST['practicals'];
             $credits = $_POST['credits'];
 
-            if(!empty($semester) || !empty($department) ||  !empty($coursecode) || !empty($coursetitle) || !empty($category) || !empty($contactperiods) || !empty($lectures) || !empty($tutorials) || !empty($practicals) || !empty($credits)){
+            if(!empty($regulation) || !empty($semester) || !empty($department) ||  !empty($coursecode) || !empty($coursetitle) || !empty($category) || !empty($contactperiods) || !empty($lectures) || !empty($tutorials) || !empty($practicals) || !empty($credits)){
 
                 $SELECT = "SELECT coursecode From subjects Where coursecode = ? Limit 1";
-                $INSERT1 ="INSERT Into subjects (semester,department,coursecode,coursetitle,category,contactperiods,lectures,tutorials,practicals,credits) values(?,?,?,?,?,?,?,?,?,?)";
+                $INSERT1 ="INSERT Into subjects (regulation,semester,department,coursecode,coursetitle,category,contactperiods,lectures,tutorials,practicals,credits) values(?,?,?,?,?,?,?,?,?,?,?)";
 
                 //prepare statement
                 $stmt = $conn->prepare($SELECT);
@@ -40,7 +41,7 @@
 
                 if ($rnum==0){
                     $stmt=$conn->prepare($INSERT1);
-                    $stmt->bind_param("issssiiiii", $semester,$department,$coursecode,$coursetitle,$category,$contactperiods,$lectures,$tutorials,$practicals,$credits);
+                    $stmt->bind_param("iissssiiiii",$regulation,$semester,$department,$coursecode,$coursetitle,$category,$contactperiods,$lectures,$tutorials,$practicals,$credits);
                     $stmt->execute();
                     header("Location: subject1.php");
                 }
@@ -56,6 +57,7 @@
         }
 
         if(isset($_POST['updatesubmit'])){
+            $regulation = $_POST['regulation'];
             $semester = $_POST['semester'];
             $department = $_POST['department'];
             $coursecode = $_POST['coursecode'];
@@ -67,7 +69,7 @@
             $practicals = $_POST['practicals'];
             $credits = $_POST['credits'];
 
-            $qry = "UPDATE subjects SET semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
+            $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
             $result = mysqli_query($conn, $qry);
 
             if($result){
@@ -162,6 +164,11 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div class="form-group">
+                                                                <label>Regulation</label>
+                                                                <input type="number" class="form-control" name="regulation" required="">
+                                                                <span></span>
+                                                            </div>
+                                                            <div class="form-group">
                                                                 <label>Semester</label>
                                                                 <input type="number" class="form-control" name="semester" required="">
                                                                 <span></span>
@@ -250,6 +257,7 @@
             <thead>
                 <tr>
                     <th scope="col">SI.No</th>
+                    <th scope="col">Regulation</th>
                     <th scope="col">Semester</th>
                     <th scope="col">Department</th>
                     <th scope="col">Course Code</th>
@@ -271,6 +279,7 @@
                     if($result){
                         while($row=mysqli_fetch_assoc($result)){
                             $sno=$row['sno'];
+                            $reg=$row['regulation'];
                             $sem=$row['semester'];
                             $dep=$row['department'];
                             $cc=$row['coursecode'];
@@ -283,6 +292,7 @@
                             $cred=$row['credits'];
                             echo'<tr>
                             <th scope="row">'.$number.'</th>
+                            <td>'.$reg.'</td>
                             <td>'.$sem.'</td>
                             <td>'.$dep.'</td>
                             <td>'.$cc.'</td>
@@ -310,6 +320,11 @@
                                                 <form method="post">
                                                     <div class="row">
                                                         <div class="col">
+                                                        <div class="form-group">
+                                                                <label>Regulation</label>
+                                                                <input type="number" class="form-control" name="regulation" id="reg" required="">
+                                                                <span></span>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <label>Semester</label>
                                                                 <input type="number" class="form-control" name="semester" id="sem" required="">
@@ -405,16 +420,17 @@ $(document).ready(function(){
 
             console.log(data);
 
-            $('#sem').val(data[0]);
-            $('#dep').val(data[1]);
-            $('#cc').val(data[2]);
-            $('#ct').val(data[3]);
-            $('#cat').val(data[4]);
-            $('#cp').val(data[5]);
-            $('#lec').val(data[6]);
-            $('#tut').val(data[7]);
-            $('#prac').val(data[8]);
-            $('#cred').val(data[9]);
+            $('#reg').val(data[0]);
+            $('#sem').val(data[1]);
+            $('#dep').val(data[2]);
+            $('#cc').val(data[3]);
+            $('#ct').val(data[4]);
+            $('#cat').val(data[5]);
+            $('#cp').val(data[6]);
+            $('#lec').val(data[7]);
+            $('#tut').val(data[8]);
+            $('#prac').val(data[9]);
+            $('#cred').val(data[10]);
     });
 });
 
