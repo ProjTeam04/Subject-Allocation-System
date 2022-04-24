@@ -42,17 +42,40 @@
                     $stmt=$conn->prepare($INSERT1);
                     $stmt->bind_param("issssiiiii", $semester,$department,$coursecode,$coursetitle,$category,$contactperiods,$lectures,$tutorials,$practicals,$credits);
                     $stmt->execute();
+                    header("Location: subject1.php");
                 }
                 else{
                     echo "Course is already exist!";
                 }
                 $stmt->close();
-                $conn->close();
             }
             else {
                 echo "All field are required";
                 die();
                 }
+        }
+
+        if(isset($_POST['updatesubmit'])){
+            $semester = $_POST['semester'];
+            $department = $_POST['department'];
+            $coursecode = $_POST['coursecode'];
+            $coursetitle = $_POST['coursetitle'];
+            $category = $_POST['category'];
+            $contactperiods = $_POST['contactperiods'];
+            $lectures = $_POST['lectures'];
+            $tutorials = $_POST['tutorials'];
+            $practicals = $_POST['practicals'];
+            $credits = $_POST['credits'];
+
+            $qry = "UPDATE subjects SET semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
+            $result = mysqli_query($conn, $qry);
+
+            if($result){
+                header("Location:subject1.php");
+            }
+            else{
+                echo 'Data not updated!';
+            }
         }
 
     }
@@ -79,7 +102,7 @@
                 <!---Home-->
                 <ul class="navbar-nav me-auto order-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="welcome.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                 <!---Regulation-->
                     <li class="nav-item dropdown">
@@ -122,7 +145,7 @@
                 <!--Popup Form-->
                     <li  class="nav-item button">
                         <button type="button" class="btn btn-close-white" data-toggle="modal" data-target="#myModal">Add Course</button>
-                        
+                        <!-- popup starts-->
                         <div id="myModal" class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                         
@@ -211,6 +234,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- popup ends-->
                         </li>
                     </ul>
                 <!--Search Bar-->
@@ -243,6 +267,7 @@
                 <?php
                     $sql="SELECT * from subjects";
                     $result=mysqli_query($conn,$sql);
+                    $number=1;
                     if($result){
                         while($row=mysqli_fetch_assoc($result)){
                             $sno=$row['sno'];
@@ -257,7 +282,7 @@
                             $prac=$row['practicals'];
                             $cred=$row['credits'];
                             echo'<tr>
-                            <th scope="row">'.$sno.'</th>
+                            <th scope="row">'.$number.'</th>
                             <td>'.$sem.'</td>
                             <td>'.$dep.'</td>
                             <td>'.$cc.'</td>
@@ -268,9 +293,9 @@
                             <td>'.$tut.'</td>
                             <td>'.$prac.'</td>
                             <td>'.$cred.'</td>
-                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myeditModal">Update</a></button>
-
-                            <div id="myeditModal" class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
+                            
+                            <div id="myeditmodel" class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                         
                                 <div class="modal-content">
@@ -279,7 +304,7 @@
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <!--copy-->
+                                        
                                         <div class="card w-100" style="width: 18rem; margin: 0 auto">
                                             <div class="card-body">
                                                 <form method="post">
@@ -287,27 +312,27 @@
                                                         <div class="col">
                                                             <div class="form-group">
                                                                 <label>Semester</label>
-                                                                <input type="number" class="form-control" name="semester" required="" value="'.$sem.'">
+                                                                <input type="number" class="form-control" name="semester" id="sem" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Department</label>
-                                                                <input type="text" class="form-control" name="department" required="">
+                                                                <input type="text" class="form-control" name="department" id="dep" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Course code</label>
-                                                                <input type="text" class="form-control" name="coursecode" required="">
+                                                                <input type="text" class="form-control" name="coursecode" id="cc" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Course title</label>
-                                                                <input type="text" class="form-control" name="coursetitle" required="">
+                                                                <input type="text" class="form-control" name="coursetitle" id="ct" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Category</label>
-                                                                <input type="text" class="form-control" name="category" required="">
+                                                                <input type="text" class="form-control" name="category" id="cat" required="">
                                                                 <span></span>
                                                             </div>
                                                             
@@ -315,64 +340,82 @@
                                                         <div class="col">
                                                             <div class="form-group">
                                                                 <label>Contact Periods</label>
-                                                                <input type="number" class="form-control" name="contactperiods"  required="">
+                                                                <input type="number" class="form-control" name="contactperiods" id="cp"  required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Lectures</label>
-                                                                <input type="number" class="form-control" name="lectures" required="">
+                                                                <input type="number" class="form-control" name="lectures" id="lec" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Tutorials</label>
-                                                                <input type="number" class="form-control" name="tutorials" required="">
+                                                                <input type="number" class="form-control" name="tutorials" id="tut" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Practicals</label>
-                                                                <input type="number" class="form-control" name="practicals" required="">
+                                                                <input type="number" class="form-control" name="practicals" id="prac" required="">
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Credits</label>
-                                                                <input type="number" class="form-control" name="credits" required="">
+                                                                <input type="number" class="form-control" name="credits" id="cred" required="">
                                                                 <span></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <br>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary" name="update">Update</button>
-                                                        
+                                                        <button type="submit" class="btn btn-primary" name="updatesubmit">Update</button>
                                                         <input class="btn btn-danger" type="reset" value="Clear">
-                                                        
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!---copy ends-->
+                                        </div>        
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            
+                                
                                 <button type="button" class="btn btn-danger"><a href="delete.php?deleteid='.$sno.'" class="text-light">Delete</a></button>
                             </td>
                             </tr>';
-
+                            $number++;
                         }
-                    
                     }
-
                 ?>
-
             </tbody>
         </table>
         <!--Course Table Ends-->       
      </body>
  </html>
+<script>
 
+$(document).ready(function(){
+    $('.editbutton').on('click',function(){
+        $('#myeditmodel').modal('show');
 
+            $tr = $(this).closest('tr');
+
+            var data = $tr.children("td").map(function(){
+                return $(this).text();
+            }).get();
+
+            console.log(data);
+
+            $('#sem').val(data[0]);
+            $('#dep').val(data[1]);
+            $('#cc').val(data[2]);
+            $('#ct').val(data[3]);
+            $('#cat').val(data[4]);
+            $('#cp').val(data[5]);
+            $('#lec').val(data[6]);
+            $('#tut').val(data[7]);
+            $('#prac').val(data[8]);
+            $('#cred').val(data[9]);
+    });
+});
+
+</script>
