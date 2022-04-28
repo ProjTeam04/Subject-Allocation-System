@@ -6,6 +6,24 @@
 
     //create connection
     $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
+
+    if(isset($_POST['sendmail'])){
+        if(isset($_POST['subjects'])){
+            $subjects = $_POST['subjects'];
+            echo "you selected the following subjects:<br>";
+            foreach ($subjects as $key => $value) {
+                $query = "SELECT regulation, semester, department, coursetitle from subjects Where coursecode = '$value'";
+                $qry_run = mysqli_query($conn,$query);
+                $row=mysqli_fetch_assoc($qry_run);
+                echo $value.'-'.$row['regulation'];
+                echo "<br>";
+
+            }
+        }
+        else{
+            echo "you should select atleast one subject";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -70,14 +88,14 @@
                         </div>
                     </li>
                 </ul>
+            </div>
                 <!--Search Bar-->
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" name="search" value="<?php if(isset($_GET['search'])){ echo $_GET['search']; } ?>" placeholder="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
                 </form>
-            </div>
         </nav>
-        <form>
+        <form method="post">
         <table class="table table-bordered table-primary">
             <thead>
                 <tr>
@@ -111,7 +129,7 @@
                             $ct=$row['coursetitle'];
                             $cat=$row['category'];
                             echo'<tr>
-                            <td><input type="checkbox" class="form-check-input" id="exampleCheck1"></td>
+                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
                             <td>'.$sno.'</td>
                             <td>'.$reg.'</td>
                             <td>'.$sem.'</td>
@@ -140,7 +158,7 @@
                             $ct=$row['coursetitle'];
                             $cat=$row['category'];
                             echo'<tr>
-                            <td><input type="checkbox" class="form-check-input" id="exampleCheck1"></td>
+                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
                             <td>'.$number.'</td>
                             <td>'.$reg.'</td>
                             <td>'.$sem.'</td>
@@ -157,7 +175,7 @@
         </table>
         <center>
             <button type="submit" class="btn btn-primary btn-lg" name="sendmail">Send</button>
-            <input class="btn btn-danger btn-lg" type="reset" value="Clear">
+            <input class="btn btn-danger btn-lg" type="reset" value="Cancel">
         </center>
     </form>
     </body>
