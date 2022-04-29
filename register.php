@@ -41,7 +41,7 @@ else{
       $stmt->bind_param("ssss", $fname,$lname,$email,$createpass);
       //$stmt->bind_param("ss",$username,$password);
       $stmt->execute();
-      header("Location: logintest.php");
+      header("Location: login.php");
        //echo "New record inserted sucessfully";
 
      } 
