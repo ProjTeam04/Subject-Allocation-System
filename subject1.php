@@ -26,24 +26,19 @@ if (mysqli_connect_error()) {
 
         if (!empty($regulation) || !empty($semester) || !empty($department) ||  !empty($coursecode) || !empty($coursetitle) || !empty($category) || !empty($contactperiods) || !empty($lectures) || !empty($tutorials) || !empty($practicals) || !empty($credits)) {
 
-            $SELECT = "SELECT coursecode From subjects Where coursecode = ? Limit 1";
+            
             $INSERT1 = "INSERT Into subjects (regulation,semester,department,coursecode,coursetitle,category,contactperiods,lectures,tutorials,practicals,credits) values(?,?,?,?,?,?,?,?,?,?,?)";
+            $SELECT = "SELECT * from subjects where department='$department' and coursecode='$coursecode'";
+            $select1 = mysqli_query($conn, $SELECT);
 
-            //prepare statement
-            $stmt = $conn->prepare($SELECT);
-            $stmt->bind_param("s", $coursecode);
-            $stmt->execute();
-            $stmt->bind_result($coursecode);
-            $stmt->store_result();
-            $rnum = $stmt->num_rows;
-
-            if ($rnum == 0) {
+            if (mysqli_num_rows($select1) > 0) {
+                ?><script> alert("course is already exist!"); </script><?php
+            }
+            else {
                 $stmt = $conn->prepare($INSERT1);
                 $stmt->bind_param("iissssiiiii", $regulation, $semester, $department, $coursecode, $coursetitle, $category, $contactperiods, $lectures, $tutorials, $practicals, $credits);
                 $stmt->execute();
                 header("Location: subject1.php");
-            } else {
-                echo "Course is already exist!";
             }
             $stmt->close();
         } else {
@@ -237,7 +232,7 @@ if (mysqli_connect_error()) {
                         <div class="row">
                             <div class="col order-first">
                                 <label>Regulation</label><br>
-                                <select class="form-control" name="regulation" id="reg">
+                                <select class="form-control" name="regu" id="reg">
                                     <?php
                                     $sql = "SELECT distinct regulation from subjects";
                                     $res = mysqli_query($conn, $sql); ?>
@@ -252,7 +247,7 @@ if (mysqli_connect_error()) {
                             </div>
                             <div class="col">
                                 <label>Department</label>
-                                <select class="form-control" name="department" id="dep">
+                                <select class="form-control" name="dept" id="dep">
                                     <?php
                                     $sql = "SELECT distinct department from subjects";
                                     $res = mysqli_query($conn, $sql); ?>
@@ -268,7 +263,7 @@ if (mysqli_connect_error()) {
                             </div>
                             <div class="col order-last">
                                 <label>Semester</label>
-                                <select class="form-control" name="semester" id="dep">
+                                <select class="form-control" name="semes" id="dep">
                                     <?php
                                     $sql = "SELECT distinct semester from subjects";
                                     $res = mysqli_query($conn, $sql); ?>
@@ -337,7 +332,7 @@ if (mysqli_connect_error()) {
                         $prac = $row['practicals'];
                         $cred = $row['credits'];
                         echo '<tr>
-                            <th scope="row">' . $sno . '</th>
+                            <th scope="row">' . $number . '</th>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -354,6 +349,7 @@ if (mysqli_connect_error()) {
                             <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
                             </td>
                             </tr>';
+                        $number++;
                     }
                 } else {
             ?>
@@ -362,7 +358,58 @@ if (mysqli_connect_error()) {
                     </tr>
                 <?php
                 }
-            } else if ($result) {
+            } 
+            else if (isset($_POST['filtersubmit'])) {
+                $regulation = $_POST['regu'];
+                $department = $_POST['dept'];
+                $semester = $_POST['semes'];
+
+                $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                $select1 = mysqli_query($conn, $select);
+
+                if (mysqli_num_rows($select1) > 0) {
+                    while ($row = mysqli_fetch_assoc($select1)) {
+                        $sno = $row['sno'];
+                        $reg = $row['regulation'];
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        $cat = $row['category'];
+                        $cp = $row['contactperiods'];
+                        $lec = $row['lectures'];
+                        $tut = $row['tutorials'];
+                        $prac = $row['practicals'];
+                        $cred = $row['credits'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            <td>' . $cp . '</td>
+                            <td>' . $lec . '</td>
+                            <td>' . $tut . '</td>
+                            <td>' . $prac . '</td>
+                            <td>' . $cred . '</td>
+                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
+                                    
+                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
+                            </td>
+                            </tr>';
+                        $number++;
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="13">No record found</td>
+                    </tr>
+            <?php
+                }
+            }
+            else if ($result) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $sno = $row['sno'];
                     $reg = $row['regulation'];
@@ -396,55 +443,7 @@ if (mysqli_connect_error()) {
                             </tr>';
                     $number++;
                 }
-            } else if (isset($_POST['filtersubmit'])) {
-                $regulation = $_POST['regulation'];
-                $department = $_POST['department'];
-                $semester = $_POST['semester'];
-
-                $select = "select * from subjects where regulation='$regulation',department='$department',semester='$semester'";
-                $select1 = mysqli_query($conn, $select);
-
-                if (mysqli_num_rows($select1) > 0) {
-                    while ($row = mysqli_fetch_assoc($select1)) {
-                        $sno = $row['sno'];
-                        $reg = $row['regulation'];
-                        $sem = $row['semester'];
-                        $dep = $row['department'];
-                        $cc = $row['coursecode'];
-                        $ct = $row['coursetitle'];
-                        $cat = $row['category'];
-                        $cp = $row['contactperiods'];
-                        $lec = $row['lectures'];
-                        $tut = $row['tutorials'];
-                        $prac = $row['practicals'];
-                        $cred = $row['credits'];
-                        echo '<tr>
-                            <th scope="row">' . $sno . '</th>
-                            <td>' . $reg . '</td>
-                            <td>' . $sem . '</td>
-                            <td>' . $dep . '</td>
-                            <td>' . $cc . '</td>
-                            <td>' . $ct . '</td>
-                            <td>' . $cat . '</td>
-                            <td>' . $cp . '</td>
-                            <td>' . $lec . '</td>
-                            <td>' . $tut . '</td>
-                            <td>' . $prac . '</td>
-                            <td>' . $cred . '</td>
-                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
-                                    
-                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
-                            </td>
-                            </tr>';
-                    }
-                } else {
-                ?>
-                    <tr>
-                        <td colspan="13">No record found</td>
-                    </tr>
-            <?php
-                }
-            }
+            } 
             ?>
             <div id="myeditmodel" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -463,7 +462,7 @@ if (mysqli_connect_error()) {
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Regulation</label>
-                                                    <input type="number" class="form-control" name="regulation" id="reg" required="">
+                                                    <input type="number" class="form-control" name="regulation" id="regu" required="">
                                                     <span></span>
                                                 </div>
                                                 <div class="form-group">
@@ -568,7 +567,7 @@ if (mysqli_connect_error()) {
 
             console.log(data);
 
-            $('#reg').val(data[0]);
+            $('#regu').val(data[0]);
             $('#sem').val(data[1]);
             $('#dep').val(data[2]);
             $('#cc').val(data[3]);

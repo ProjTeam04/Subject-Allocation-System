@@ -57,6 +57,70 @@
                     <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
                 </form>
         </nav>
+        <!--- FILTER STARTS REGULATION DEPARTMENT---------------->
+    <form method="post">
+        <center>
+                <div class="btn-group btn-group-inline">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col order-first">
+                                <label>Regulation</label><br>
+                                <select class="form-control" name="regu" id="reg">
+                                    <?php
+                                    $sql = "SELECT distinct regulation from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['regulation']; ?>"><?php echo $rows['regulation']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label>Department</label>
+                                <select class="form-control" name="dept" id="dep">
+                                    <?php
+                                    $sql = "SELECT distinct department from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                                <span></span>
+                            </div>
+                            <div class="col order-last">
+                                <label>Semester</label>
+                                <select class="form-control" name="semes" id="dep">
+                                    <?php
+                                    $sql = "SELECT distinct semester from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                                <span></span>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
+                        </div>
+                    </div>
+        </center>
+    </form>
+    <!-- filter ends -->
+        <br>
         <form method="post">
         <table class="table table-bordered table-primary">
             <thead>
@@ -110,6 +174,42 @@
                             <?php
                         }
                     }
+            else if (isset($_POST['filtersubmit'])) {
+                $regulation = $_POST['regu'];
+                $department = $_POST['dept'];
+                $semester = $_POST['semes'];
+
+                $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                $select1 = mysqli_query($conn, $select);
+
+                if (mysqli_num_rows($select1) > 0) {
+                    while ($row = mysqli_fetch_assoc($select1)) {
+                        $sno = $row['sno'];
+                        $reg = $row['regulation'];
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        $cat = $row['category'];
+                        echo '<tr>
+                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
+                            <td>'.$sno.'</td>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            </tr>';
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="13">No record found</td>
+                    </tr>
+            <?php
+                }
+            }
                     else if($result){
                         while($row=mysqli_fetch_assoc($result)){
                             $sno=$row['sno'];
