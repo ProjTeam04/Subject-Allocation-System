@@ -49,44 +49,6 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                     </li>
-                <!---Regulation-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Regulation
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">2013</a>
-                            <a class="dropdown-item" href="#">2017</a>
-                            <a class="dropdown-item" href="#">2021</a>
-                        </div>
-                    </li>
-                <!---Department-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Department
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Computer Science Engineering</a>
-                            <a class="dropdown-item" href="#">Electronics & Communication Engineering</a>
-                            <a class="dropdown-item" href="#">Mechanical Engineering</a>
-                            <a class="dropdown-item" href="#">Geo Informatics Engineering</a>
-                            <a class="dropdown-item" href="#">Civil Engineering</a>
-                            <a class="dropdown-item" href="#">Science and Humanities</a>
-                        </div>
-                    </li>
-                <!---Semester-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Semester
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Odd Semesters</a>
-                            <a class="dropdown-item" href="#">Even Semesters</a>
-                        </div>
-                    </li>
                 </ul>
             </div>
                 <!--Search Bar-->
