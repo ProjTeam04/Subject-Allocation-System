@@ -102,7 +102,7 @@ if (mysqli_connect_error()) {
                 <li class="nav-item active">
                     <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                 </li>
-             
+
                 <!--Popup Form for subjects-->
                 <li class="nav-item button">
                     <button type="button" class="btn btn-close-white" data-toggle="modal" data-target="#myModal">Add Course</button>
@@ -231,36 +231,50 @@ if (mysqli_connect_error()) {
     </nav>
     <!--Nav Ends-->
     <form method="post">
+        <center>
+
         <div class="btn-group btn-group-inline">
-            <div class=" form-group">
-                <div>
-                    <label>Regulation</label>
-                    <input type="number" class="form-control" name="regulation" id="reg" required="">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col order-first">
+                            <label>Regulation</label>
+                            <input type="number" class="form-control" name="regulation" id="reg" required="">
+                        </div>
+                        <div class="col">
+                            <label>Department</label>
+                            <select class=" form-control" name="department" id="dep" required="">
+                                <option id="dep" name="cse">Computer Science Engineering</option>
+                                <option id="dep" name="ece">Electronics & Communication Engineering</option>
+                                <option id="dep" name="mech">Mechanical Engineering</option>
+                                <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                <option id="dep" name="civil">Civil Engineering</option>
+                                <option id="dep" name="humanities">Science and Humanities</option>
+                            </select>
+                        </div>
+                        <div class="col order-last">
+                            <label>Semester</label>
+                            <select class=" form-control" name="semester" id="sem" required="">
+                                <option id="sem" name="odd1">1</option>
+                                <option id="sem" name="even1">2</option>
+                                <option id="sem" name="odd2">3</option>
+                                <option id="sem" name="even2">4</option>
+                                <option id="sem" name="odd3">5</option>
+                                <option id="sem" name="even3">6</option>
+                                <option id="sem" name="odd4">7</option>
+                                <option id="sem" name="even4">8</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <center>
+                        <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                    </center>
                 </div>
-                <label>Department</label>
-                <select class="form-control" name="department" id="dep" required="">
-                    <option id="dep" name="cse">Computer Science Engineering</option>
-                    <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                    <option id="dep" name="mech">Mechanical Engineering</option>
-                    <option id="dep" name="geo">Geo Informatics Engineering</option>
-                    <option id="dep" name="civil">Civil Engineering</option>
-                    <option id="dep" name="humanities">Science and Humanities</option>
-                </select>
-                <label>Semester</label>
-                <select class="form-control" name="semester" id="sem" required="">
-                    <option id="sem" name="odd1">1</option>
-                    <option id="sem" name="even1">2</option>
-                    <option id="sem" name="odd2">3</option>
-                    <option id="sem" name="even2">4</option>
-                    <option id="sem" name="odd3">5</option>
-                    <option id="sem" name="even3">6</option>
-                    <option id="sem" name="odd4">7</option>
-                    <option id="sem" name="even4">8</option>
-                </select>
-            </div>
-        </div>
+        </center>
     </form>
     <!--Course Table Starts-->
+    <br>
     <table class="table table-bordered table-primary">
         <thead>
             <tr>
