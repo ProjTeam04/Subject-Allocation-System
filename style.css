@@ -3,6 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+.logo{
+    width: 200px;
+    display:  block;
+    margin: 0 auto;
+}
 /*Nav Bar*/
 .navbar  {
     font-size: 120%;

@@ -94,7 +94,8 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="Subject-Allocation-System/fetch.js"></script> 
     </head>
      <body>
          <!--Nav Starts-->
@@ -109,14 +110,20 @@
                 <!---Regulation-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                            aria-haspopup="true" aria-expanded="false" >
                             Regulation
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">2013</a>
-                            <a class="dropdown-item" href="#">2017</a>
-                            <a class="dropdown-item" href="#">2021</a>
-                        </div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <?php
+                                    $sql = "SELECT distinct regulation from subjects";
+                                    $res = mysqli_query($conn, $sql);
+                                    while($rows = mysqli_fetch_array($res)){
+                                        ?>
+                                        <a class="dropdown-item" value="<?php echo $rows['regulation']; ?>"><?php echo $rows['regulation']; ?></a>
+                                        <?php
+                                    }
+                                ?>
+                            </div>
                     </li>
                 <!---Department-->
                     <li class="nav-item dropdown">
@@ -125,12 +132,15 @@
                             Department
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Computer Science Engineering</a>
-                            <a class="dropdown-item" href="#">Electronics & Communication Engineering</a>
-                            <a class="dropdown-item" href="#">Mechanical Engineering</a>
-                            <a class="dropdown-item" href="#">Geo Informatics Engineering</a>
-                            <a class="dropdown-item" href="#">Civil Engineering</a>
-                            <a class="dropdown-item" href="#">Science and Humanities</a>
+                            <?php
+                                    $sql = "SELECT distinct department from subjects";
+                                    $res = mysqli_query($conn, $sql);
+                                    while($rows = mysqli_fetch_array($res)){
+                                        ?>
+                                        <a class="dropdown-item" value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></a>
+                                        <?php
+                                    }
+                                ?>
                         </div>
                     </li>
                 <!---Semester-->
@@ -140,11 +150,17 @@
                             Semester
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Odd Semesters</a>
-                            <a class="dropdown-item" href="#">Even Semesters</a>
+                            <a class="dropdown-item" href="#">1</a>
+                            <a class="dropdown-item" href="#">2</a>
+                            <a class="dropdown-item" href="#">3</a>
+                            <a class="dropdown-item" href="#">4</a>
+                            <a class="dropdown-item" href="#">5</a>
+                            <a class="dropdown-item" href="#">6</a>
+                            <a class="dropdown-item" href="#">7</a>
+                            <a class="dropdown-item" href="#">8</a>
                         </div>
                     </li>
-                <!--Popup Form-->
+                <!--Popup Form for subjects-->
                     <li  class="nav-item button">
                         <button type="button" class="btn btn-close-white" data-toggle="modal" data-target="#myModal">Add Course</button>
                         <!-- popup starts-->
@@ -170,14 +186,31 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Semester</label>
-                                                                <input type="number" class="form-control" name="semester" required="">
+                                                                <select class="form-control" name="semester" id="sem" required="">
+                                                                <option id="sem" name="odd1">1</option>
+                                                                <option id="sem" name="even1">2</option>
+                                                                <option id="sem" name="odd2">3</option>
+                                                                <option id="sem" name="even2">4</option>
+                                                                <option id="sem" name="odd3">5</option>
+                                                                <option id="sem" name="even3">6</option>
+                                                                <option id="sem" name="odd4">7</option>
+                                                                <option id="sem" name="even4">8</option>
+                                                            </select>
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Department</label>
-                                                                <input type="text" class="form-control" name="department" required="">
+                                                                <select class="form-control" name="department" id="dep" required="">
+                                                                <option id="dep" name="cse">Computer Science Engineering</option>
+                                                                <option id="dep" name="ece">Electronics & Communication Engineering</option>
+                                                                <option id="dep" name="mech">Mechanical Engineering</option>
+                                                                <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                                                <option id="dep" name="civil">Civil Engineering</option>
+                                                                <option id="dep" name="humanities">Science and Humanities</option>
+                                                            </select>
                                                                 <span></span>
                                                             </div>
+                                        
                                                             <div class="form-group">
                                                                 <label>Course code</label>
                                                                 <input type="text" class="form-control" name="coursecode" required="">
@@ -193,9 +226,9 @@
                                                                 <input type="text" class="form-control" name="category" required="">
                                                                 <span></span>
                                                             </div>
-                                                            
                                                         </div>
                                                         <div class="col">
+                                                            
                                                             <div class="form-group">
                                                                 <label>Contact Periods</label>
                                                                 <input type="number" class="form-control" name="contactperiods"  required="">
@@ -244,12 +277,12 @@
                             <!-- popup ends-->
                         </li>
                     </ul>
+                </div>
                 <!--Search Bar-->
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" name="search" value="<?php if(isset($_GET['search'])){ echo $_GET['search']; } ?>" placeholder="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
                 </form>
-            </div>
         </nav>
         <!--Nav Ends-->
         <!--Course Table Starts-->
@@ -278,7 +311,7 @@
                     $number=1;
                     if(isset($_GET['search'])){
                         $filtervalues = $_GET['search'];
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' ";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' ";
                         $qry_run = mysqli_query($conn,$qry);
 
                         if(mysqli_num_rows($qry_run) > 0){
@@ -381,12 +414,28 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Semester</label>
-                                                                <input type="number" class="form-control" name="semester" id="sem" required="">
+                                                                <select class="form-control" name="semester" id="sem" required="">
+                                                                <option id="sem" name="odd1">1</option>
+                                                                <option id="sem" name="even1">2</option>
+                                                                <option id="sem" name="odd2">3</option>
+                                                                <option id="sem" name="even2">4</option>
+                                                                <option id="sem" name="odd3">5</option>
+                                                                <option id="sem" name="even3">6</option>
+                                                                <option id="sem" name="odd4">7</option>
+                                                                <option id="sem" name="even4">8</option>
+                                                            </select>
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Department</label>
-                                                                <input type="text" class="form-control" name="department" id="dep" required="">
+                                                                <select class="form-control" name="department" id="dep" required="">
+                                                                <option id="dep" name="cse">Computer Science Engineering</option>
+                                                                <option id="dep" name="ece">Electronics & Communication Engineering</option>
+                                                                <option id="dep" name="mech">Mechanical Engineering</option>
+                                                                <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                                                <option id="dep" name="civil">Civil Engineering</option>
+                                                                <option id="dep" name="humanities">Science and Humanities</option>
+                                                            </select>
                                                                 <span></span>
                                                             </div>
                                                             <div class="form-group">
@@ -480,3 +529,5 @@ $(document).ready(function(){
 });
 
 </script>
+
+

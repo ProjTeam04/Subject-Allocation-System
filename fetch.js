@@ -1,0 +1,3 @@
+function selectreg(){
+	alert("Hello");
+}
