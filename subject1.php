@@ -76,7 +76,6 @@ if (mysqli_connect_error()) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -89,7 +88,7 @@ if (mysqli_connect_error()) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Subject-Allocation-System/fetch.js"></script>
+    <script type="text/javascript" src="fetch.js"></script>
 </head>
 
 <body>
@@ -230,47 +229,67 @@ if (mysqli_connect_error()) {
         </form>
     </nav>
     <!--Nav Ends-->
+    <!--- FILTER STARTS REGULATION DEPARTMENT---------------->
     <form method="post">
         <center>
+                <div class="btn-group btn-group-inline">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col order-first">
+                                <label>Regulation</label><br>
+                                <select class="form-control" name="regulation" id="reg">
+                                    <?php
+                                    $sql = "SELECT distinct regulation from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['regulation']; ?>"><?php echo $rows['regulation']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label>Department</label>
+                                <select class="form-control" name="department" id="dep">
+                                    <?php
+                                    $sql = "SELECT distinct department from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                                <span></span>
+                            </div>
+                            <div class="col order-last">
+                                <label>Semester</label>
+                                <select class="form-control" name="semester" id="dep">
+                                    <?php
+                                    $sql = "SELECT distinct semester from subjects";
+                                    $res = mysqli_query($conn, $sql); ?>
+                                    <option value="">select</option><?php
+                                    while ($rows = mysqli_fetch_array($res)) {
+                                    ?>
+                                        <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
+                                    <?php
+                                                                    }
+                                    ?>
+                                </select>
+                                <span></span>
+                            </div>
 
-        <div class="btn-group btn-group-inline">
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
 
-                <div class="container">
-                    <div class="row">
-                        <div class="col order-first">
-                            <label>Regulation</label>
-                            <input type="number" class="form-control" name="regulation" id="reg" required="">
-                        </div>
-                        <div class="col">
-                            <label>Department</label>
-                            <select class=" form-control" name="department" id="dep" required="">
-                                <option id="dep" name="cse">Computer Science Engineering</option>
-                                <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                                <option id="dep" name="mech">Mechanical Engineering</option>
-                                <option id="dep" name="geo">Geo Informatics Engineering</option>
-                                <option id="dep" name="civil">Civil Engineering</option>
-                                <option id="dep" name="humanities">Science and Humanities</option>
-                            </select>
-                        </div>
-                        <div class="col order-last">
-                            <label>Semester</label>
-                            <select class=" form-control" name="semester" id="sem" required="">
-                                <option id="sem" name="odd1">1</option>
-                                <option id="sem" name="even1">2</option>
-                                <option id="sem" name="odd2">3</option>
-                                <option id="sem" name="even2">4</option>
-                                <option id="sem" name="odd3">5</option>
-                                <option id="sem" name="even3">6</option>
-                                <option id="sem" name="odd4">7</option>
-                                <option id="sem" name="even4">8</option>
-                            </select>
                         </div>
                     </div>
-                    <br>
-                    <center>
-                        <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                    </center>
-                </div>
         </center>
     </form>
     <!--Course Table Starts-->
@@ -341,7 +360,7 @@ if (mysqli_connect_error()) {
                     <tr>
                         <td colspan="13">No record found</td>
                     </tr>
-            <?php
+                <?php
                 }
             } else if ($result) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -376,6 +395,54 @@ if (mysqli_connect_error()) {
                             </td>
                             </tr>';
                     $number++;
+                }
+            } else if (isset($_POST['filtersubmit'])) {
+                $regulation = $_POST['regulation'];
+                $department = $_POST['department'];
+                $semester = $_POST['semester'];
+
+                $select = "select * from subjects where regulation='$regulation',department='$department',semester='$semester'";
+                $select1 = mysqli_query($conn, $select);
+
+                if (mysqli_num_rows($select1) > 0) {
+                    while ($row = mysqli_fetch_assoc($select1)) {
+                        $sno = $row['sno'];
+                        $reg = $row['regulation'];
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        $cat = $row['category'];
+                        $cp = $row['contactperiods'];
+                        $lec = $row['lectures'];
+                        $tut = $row['tutorials'];
+                        $prac = $row['practicals'];
+                        $cred = $row['credits'];
+                        echo '<tr>
+                            <th scope="row">' . $sno . '</th>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            <td>' . $cp . '</td>
+                            <td>' . $lec . '</td>
+                            <td>' . $tut . '</td>
+                            <td>' . $prac . '</td>
+                            <td>' . $cred . '</td>
+                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
+                                    
+                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
+                            </td>
+                            </tr>';
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="13">No record found</td>
+                    </tr>
+            <?php
                 }
             }
             ?>
