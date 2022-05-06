@@ -11,8 +11,8 @@ if(!empty($username) || !empty($password)){
    $password= mysqli_real_escape_string($conn,$password);
    
     
-  //  mysqli_connect("project");
-
+   //mysqli_connect("project");
+   
     $result = mysqli_query($conn,"select * from login1 where email = '$username' and createpass = '$password'")
                 or die("Failed to query database ".mysqli_error());
     $row = mysqli_fetch_array($result);

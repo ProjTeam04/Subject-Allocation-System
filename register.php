@@ -66,7 +66,7 @@ else{
 <head>  
    <title>Registration</title>
    <link rel="icon" href="images/annaunivlogo.webp">
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="stylelogin.css">
 </head>
 <body> 
    <div class="blur">

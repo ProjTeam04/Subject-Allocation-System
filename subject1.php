@@ -110,7 +110,6 @@ if (mysqli_connect_error()) {
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <!--copy-->
                                     <div class="card w-100" style="width: 18rem; margin: 0 auto">
                                         <div class="card-body">
                                             <form method="post">
@@ -206,7 +205,6 @@ if (mysqli_connect_error()) {
                                     </form>
                                 </div>
                             </div>
-                            <!---copy ends-->
                         </div>
                     </div>
         </div>
@@ -224,7 +222,7 @@ if (mysqli_connect_error()) {
         </form>
     </nav>
     <!--Nav Ends-->
-    <!--- FILTER STARTS REGULATION DEPARTMENT---------------->
+    <!------------------- FILTER STARTS REGULATION DEPARTMENT---------------->
     <form method="post">
         <center>
                 <div class="btn-group btn-group-inline">
