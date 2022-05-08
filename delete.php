@@ -1,3 +1,5 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <?php
 	$host = "localhost";
     $dbusername = "root";
@@ -17,7 +19,7 @@
 			$sql="delete from subjects where sno=$sno";
 			$result=mysqli_query($conn,$sql);
 			if($result){
-				//echo"Deleted successfully";
+				?><script> alert("Do you want to delete the record?"); </script><?php
 				header('location:subject1.php');
 			}    		
 			else{

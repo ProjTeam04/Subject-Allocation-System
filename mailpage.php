@@ -179,7 +179,27 @@
                 $department = $_POST['dept'];
                 $semester = $_POST['semes'];
 
-                $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                if(!empty($regulation) && !empty($department) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                }
+                else if(!empty($regulation) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department'";
+                }
+                else if(!empty($regulation) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester'";
+                }
+                else if(!empty($semester) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester'";
+                }
+                else if(!empty($regulation)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation'";
+                }
+                else if(!empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department'";
+                }
+                else if(!empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE semester='$semester'";
+                }
                 $select1 = mysqli_query($conn, $select);
 
                 if (mysqli_num_rows($select1) > 0) {

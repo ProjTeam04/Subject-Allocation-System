@@ -39,8 +39,8 @@ if (mysqli_connect_error()) {
                 $stmt->bind_param("iissssiiiii", $regulation, $semester, $department, $coursecode, $coursetitle, $category, $contactperiods, $lectures, $tutorials, $practicals, $credits);
                 $stmt->execute();
                 header("Location: subject1.php");
+                $stmt->close();
             }
-            $stmt->close();
         } else {
             echo "All field are required";
             die();
@@ -60,20 +60,21 @@ if (mysqli_connect_error()) {
         $practicals = $_POST['practicals'];
         $credits = $_POST['credits'];
 
-        $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
+        $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode' and department='$department'";
         $result = mysqli_query($conn, $qry);
 
         if ($result) {
-            header("Location:subject1.php");
-        } else {
-            echo 'Data not updated!';
+            header('Location:subject1.php');
+        } 
+        else {
+            echo "Data not updated!";
         }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Subject-Entry</title>
     <link rel="icon" href="annaunivlogo.webp">
@@ -277,12 +278,10 @@ if (mysqli_connect_error()) {
                                 </select>
                                 <span></span>
                             </div>
-
                         </div>
                         <br>
                         <div>
-                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
-
+                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Search</button>
                         </div>
                     </div>
         </center>
@@ -363,8 +362,27 @@ if (mysqli_connect_error()) {
                 $regulation = $_POST['regu'];
                 $department = $_POST['dept'];
                 $semester = $_POST['semes'];
-
-                $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                if(!empty($regulation) && !empty($department) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                }
+                else if(!empty($regulation) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department'";
+                }
+                else if(!empty($regulation) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester'";
+                }
+                else if(!empty($semester) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester'";
+                }
+                else if(!empty($regulation)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation'";
+                }
+                else if(!empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department'";
+                }
+                else if(!empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE semester='$semester'";
+                }
                 $select1 = mysqli_query($conn, $select);
 
                 if (mysqli_num_rows($select1) > 0) {
@@ -467,7 +485,7 @@ if (mysqli_connect_error()) {
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Semester</label>
-                                                    <select class="form-control" name="semester" id="sem" required="">
+                                                    <select class="form-control" name="semester" id="semes" required="">
                                                         <option id="sem" name="odd1">1</option>
                                                         <option id="sem" name="even1">2</option>
                                                         <option id="sem" name="odd2">3</option>
@@ -481,13 +499,13 @@ if (mysqli_connect_error()) {
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Department</label>
-                                                    <select class="form-control" name="department" id="dep" required="">
-                                                        <option id="dep" name="cse">Computer Science Engineering</option>
-                                                        <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                                                        <option id="dep" name="mech">Mechanical Engineering</option>
-                                                        <option id="dep" name="geo">Geo Informatics Engineering</option>
-                                                        <option id="dep" name="civil">Civil Engineering</option>
-                                                        <option id="dep" name="humanities">Science and Humanities</option>
+                                                    <select class="form-control" name="department" id="depet" required="">
+                                                            <option id="dep" name="cse">Computer Science Engineering</option>
+                                                            <option id="dep" name="ece">Electronics & Communication Engineering</option>
+                                                            <option id="dep" name="mech">Mechanical Engineering</option>
+                                                            <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                                            <option id="dep" name="civil">Civil Engineering</option>
+                                                            <option id="dep" name="humanities">Science and Humanities</option>
                                                     </select>
                                                     <span></span>
                                                 </div>
@@ -506,7 +524,6 @@ if (mysqli_connect_error()) {
                                                     <input type="text" class="form-control" name="category" id="cat" required="">
                                                     <span></span>
                                                 </div>
-
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
@@ -566,10 +583,9 @@ if (mysqli_connect_error()) {
             }).get();
 
             console.log(data);
-
             $('#regu').val(data[0]);
-            $('#sem').val(data[1]);
-            $('#dep').val(data[2]);
+            $('#semes').val(data[1]);
+            $('#depet').val(data[2]);
             $('#cc').val(data[3]);
             $('#ct').val(data[4]);
             $('#cat').val(data[5]);
