@@ -10,8 +10,7 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
 if (mysqli_connect_error()) {
     die('Connect Error (' . mysqli_connect_errno() . ') '
         . mysqli_connect_error());
-} 
-else {
+} else {
     if (isset($_POST['submit'])) {
         $regulation = $_POST['regulation'];
         $semester = $_POST['semester'];
@@ -72,7 +71,7 @@ else {
                     }
                 }
             }
-            ?>
+                            ?>
 <!DOCTYPE html>
 <html>
 
@@ -101,6 +100,9 @@ else {
                 <!-------Subject-list--------------------------->
                 <li class="nav-item active">
                     <a class="nav-link" href="subject-list.php">Subject-List <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="electivelist.php">Elective List <span class="sr-only">(current)</span></a>
                 </li>
 
                 <!--Popup Form for subjects-->

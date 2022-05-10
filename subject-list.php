@@ -76,7 +76,7 @@ if (mysqli_connect_error()) {
 <html>
 
 <head>
-    <title>Subject-Entry</title>
+    <title>Subject-List</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
@@ -103,120 +103,10 @@ if (mysqli_connect_error()) {
                 </li>
 
                 <!--Popup Form for subjects-->
-                <li class="nav-item button">
-                    <button type="button" class="btn btn-close-white" data-toggle="modal" data-target="#myModal">Add Elective Course</button>
-                    <!-- popup starts-->
-                    <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title" style="margin: 0 auto"><b>Add Course Details</b></h1>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card w-100" style="width: 18rem; margin: 0 auto">
-                                        <div class="card-body">
-                                            <form method="post">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label>Regulation</label>
-                                                            <input type="number" class="form-control" name="regulation" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Semester</label>
-                                                            <select class="form-control" name="semester" id="sem" required="">
-                                                                <option id="sem" name="odd1">1</option>
-                                                                <option id="sem" name="even1">2</option>
-                                                                <option id="sem" name="odd2">3</option>
-                                                                <option id="sem" name="even2">4</option>
-                                                                <option id="sem" name="odd3">5</option>
-                                                                <option id="sem" name="even3">6</option>
-                                                                <option id="sem" name="odd4">7</option>
-                                                                <option id="sem" name="even4">8</option>
-                                                            </select>
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Department</label>
-                                                            <select class="form-control" name="department" id="dep" required="">
-                                                                <option id="dep" name="cse">Computer Science Engineering</option>
-                                                                <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                                                                <option id="dep" name="mech">Mechanical Engineering</option>
-                                                                <option id="dep" name="geo">Geo Informatics Engineering</option>
-                                                                <option id="dep" name="civil">Civil Engineering</option>
-                                                                <option id="dep" name="humanities">Science and Humanities</option>
-                                                            </select>
-                                                            <span></span>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Course code</label>
-                                                            <input type="text" class="form-control" name="coursecode" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Course title</label>
-                                                            <input type="text" class="form-control" name="coursetitle" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Category</label>
-                                                            <input type="text" class="form-control" name="category" required="">
-                                                            <span></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-
-                                                        <div class="form-group">
-                                                            <label>Contact Periods</label>
-                                                            <input type="number" class="form-control" name="contactperiods" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Lectures</label>
-                                                            <input type="number" class="form-control" name="lectures" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Tutorials</label>
-                                                            <input type="number" class="form-control" name="tutorials" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Practicals</label>
-                                                            <input type="number" class="form-control" name="practicals" required="">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Credits</label>
-                                                            <input type="number" class="form-control" name="credits" required="">
-                                                            <span></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                                                    <!--<input class="btn btn-primary" type="submit" value="Submit">-->
-                                                    <input class="btn btn-danger" type="reset" value="Clear">
-                                                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-        </div>
-        <!-- popup ends-->
-        </li>
-        </ul>
+                <li class="nav-item active">
+                    <a class="nav-link" href="electivelist.php">Elective List <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
         </div>
         <!--Search Bar-->
         <form class="form-inline my-2 my-lg-0">
