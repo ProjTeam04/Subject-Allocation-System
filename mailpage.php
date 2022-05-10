@@ -49,6 +49,10 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item button">
+                        <a class="nav-link" href="">Elective <span class="sr-only">(current)</span></a>
+                    </li>
+
                 </ul>
             </div>
                 <!--Search Bar-->
@@ -65,7 +69,7 @@
                         <div class="row">
                             <div class="col order-first">
                                 <label>Regulation</label><br>
-                                <select class="form-control" name="regu" id="reg">
+                                <select class="form-control" name="regu" id="reg" required="">
                                     <?php
                                     $sql = "SELECT distinct regulation from subjects";
                                     $res = mysqli_query($conn, $sql); ?>
@@ -114,7 +118,7 @@
                         </div>
                         <br>
                         <div>
-                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Search</button>
                         </div>
                     </div>
         </center>
@@ -125,7 +129,6 @@
         <table class="table table-bordered table-primary">
             <thead>
                 <tr>
-                    <th scope="col">Select</th>
                     <th scope="col">SI.No</th>
                     <th scope="col">Regulation</th>
                     <th scope="col">Semester</th>
@@ -137,7 +140,7 @@
             </thead>
             <tbody>
                 <?php
-                    $sql="SELECT * from subjects";
+                    $sql="SELECT * from subjects where not (category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5'))";
                     $result=mysqli_query($conn,$sql);
                     $number=1;
                     if(isset($_GET['search'])){
@@ -146,6 +149,7 @@
                         $qry_run = mysqli_query($conn,$qry);
 
                         if(mysqli_num_rows($qry_run) > 0){
+                            $number=1;
                             while($row=mysqli_fetch_assoc($qry_run)){
                             $sno=$row['sno'];
                             $reg=$row['regulation'];
@@ -155,8 +159,7 @@
                             $ct=$row['coursetitle'];
                             $cat=$row['category'];
                             echo'<tr>
-                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
-                            <td>'.$sno.'</td>
+                            <td>'.$number.'</td>
                             <td>'.$reg.'</td>
                             <td>'.$sem.'</td>
                             <td>'.$dep.'</td>
@@ -164,6 +167,7 @@
                             <td>'.$ct.'</td>
                             <td>'.$cat.'</td>
                             </tr>';
+                            $number++;
                             }
                         }
                         else{
@@ -180,25 +184,25 @@
                 $semester = $_POST['semes'];
 
                 if(!empty($regulation) && !empty($department) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($regulation) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department'";
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($regulation) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester'";
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($semester) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester'";
+                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($regulation)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation'";
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department'";
+                    $select = "SELECT * FROM subjects WHERE department='$department' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 else if(!empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE semester='$semester'";
+                    $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 }
                 $select1 = mysqli_query($conn, $select);
 
@@ -212,8 +216,7 @@
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
                         echo '<tr>
-                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
-                            <td>'.$sno.'</td>
+                            <td>'.$number.'</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -221,6 +224,7 @@
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
+                            $number++;
                     }
                 } else {
                 ?>
@@ -231,6 +235,7 @@
                 }
             }
                     else if($result){
+                        $number=1;
                         while($row=mysqli_fetch_assoc($result)){
                             $sno=$row['sno'];
                             $reg=$row['regulation'];
@@ -240,7 +245,6 @@
                             $ct=$row['coursetitle'];
                             $cat=$row['category'];
                             echo'<tr>
-                            <td><input type="checkbox" class="form-check-input" value="'.$cc.'" name="subjects[]"></td>
                             <td>'.$number.'</td>
                             <td>'.$reg.'</td>
                             <td>'.$sem.'</td>

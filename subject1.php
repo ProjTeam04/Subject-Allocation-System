@@ -178,7 +178,7 @@ if (mysqli_connect_error()) {
                                                             <span></span>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Tutorials</label>
+                                                            <label>Theory</label>
                                                             <input type="number" class="form-control" name="tutorials" required="">
                                                             <span></span>
                                                         </div>
@@ -537,7 +537,7 @@ if (mysqli_connect_error()) {
                                                     <span></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Tutorials</label>
+                                                    <label>Theory</label>
                                                     <input type="number" class="form-control" name="tutorials" id="tut" required="">
                                                     <span></span>
                                                 </div>

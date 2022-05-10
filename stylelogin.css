@@ -1,9 +1,9 @@
 body{
 	margin:  0;
 	padding: 0;
-	font-family: montserrat;
+	font-family: Times;
 	color:  white;
-  background-image: url('bg.jpg');
+  background-image: url("bgk.webp");
   background-position: cover;
   background-repeat: no-repeat;
   background-size: cover;
