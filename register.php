@@ -65,11 +65,7 @@ else{
 <html>
 <head>  
    <title>Registration</title>
-<<<<<<< HEAD
-   <link rel="icon" href="annaunivlogo.webp">
-=======
    <link rel="icon" href="images/annaunivlogo.webp">
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
    <link rel="stylesheet" href="stylelogin.css">
 </head>
 <body> 

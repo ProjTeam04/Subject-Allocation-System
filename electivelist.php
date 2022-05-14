@@ -12,11 +12,26 @@ if (isset($_POST['sendmail'])) {
         $subjects = $_POST['subjects'];
         echo "you selected the following subjects:<br>";
         foreach ($subjects as $key => $value) {
-            $query = "SELECT regulation, semester, department, coursetitle from subjects Where coursecode = '$value'";
+            $query = "SELECT * from subjects Where coursecode = '$value'";
+            $query1="SELECT * from academicyear order by sno desc limit 1";
             $qry_run = mysqli_query($conn, $query);
+            $qry_run1 = mysqli_query($conn, $query1);
             $row = mysqli_fetch_assoc($qry_run);
-            echo $value . '-' . $row['regulation'];
-            echo "<br>";
+            $row1 = mysqli_fetch_assoc($qry_run1);
+            $yr = $row1['year'];
+            $sem = $row1['sem'];
+            $regulation = $row['regulation'];
+            $semester = $row['semester'];
+            $department = $row['department'];
+            $coursecode = $row['coursecode'];
+            $coursetitle = $row['coursetitle'];
+            $category = $row['category'];
+            $INSERT1 = "INSERT Into electives (year,sem,regulation,semester,department,coursecode,coursetitle,category) values(?,?,?,?,?,?,?,?)";
+            $stmt = $conn->prepare($INSERT1);
+            $stmt->bind_param("isiissss", $yr, $sem, $regulation, $semester, $department, $coursecode, $coursetitle, $category);
+            $stmt->execute();
+            header("Location: electivelist.php");
+            $stmt->close();
         }
     } else {
         echo "you should select atleast one subject";
@@ -46,7 +61,7 @@ if (isset($_POST['sendmail'])) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="mailpage.php"> Back <span class="sr-only">(current)</span></a>
                 </li>
                
             </ul>
@@ -103,11 +118,11 @@ if (isset($_POST['sendmail'])) {
                                 $sql = "SELECT distinct semester from subjects";
                                 $res = mysqli_query($conn, $sql); ?>
                                 <option value="">select</option><?php
-                                                                while ($rows = mysqli_fetch_array($res)) {
-                                                                ?>
+                                while ($rows = mysqli_fetch_array($res)) {
+                                ?>
                                     <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
                                 <?php
-                                                                }
+                                }
                                 ?>
                             </select>
                             <span></span>
@@ -116,7 +131,7 @@ if (isset($_POST['sendmail'])) {
                     </div>
                     <br>
                     <div>
-                        <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Search</button>
                     </div>
                 </div>
         </center>
@@ -124,6 +139,10 @@ if (isset($_POST['sendmail'])) {
     <!-- filter ends -->
     <br>
     <form method="post">
+        <center>
+            <button type="submit" class="btn btn-primary btn-lg" name="sendmail">Add</button>
+            <input class="btn btn-danger btn-lg" type="reset" value="Cancel">
+        </center><br>
         <table class="table table-bordered table-primary">
             <thead>
                 <tr>
@@ -139,12 +158,12 @@ if (isset($_POST['sendmail'])) {
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * from subjects";
+                $sql = "SELECT * from subjects where category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
                 $result = mysqli_query($conn, $sql);
                 $number = 1;
                 if (isset($_GET['search'])) {
                     $filtervalues = $_GET['search'];
-                    $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' ";
+                    $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') ";
                     $qry_run = mysqli_query($conn, $qry);
 
                     if (mysqli_num_rows($qry_run) > 0) {
@@ -158,7 +177,7 @@ if (isset($_POST['sendmail'])) {
                             $cat = $row['category'];
                             echo '<tr>
                             <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
-                            <td>' . $sno . '</td>
+                            <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -179,11 +198,31 @@ if (isset($_POST['sendmail'])) {
                     $department = $_POST['dept'];
                     $semester = $_POST['semes'];
 
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
+                    if(!empty($regulation) && !empty($department) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($regulation) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($regulation) && !empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($semester) && !empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($regulation)){
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($department)){
+                    $select = "SELECT * FROM subjects WHERE department='$department' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
+                else if(!empty($semester)){
+                    $select = "SELECT * FROM subjects WHERE semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                }
                     $select1 = mysqli_query($conn, $select);
 
                     if (mysqli_num_rows($select1) > 0) {
-                        while ($row = mysqli_fetch_assoc($select1)) {
+                        while ($row = mysqli_fetch_assoc($select1)){
                             $sno = $row['sno'];
                             $reg = $row['regulation'];
                             $sem = $row['semester'];
@@ -193,7 +232,7 @@ if (isset($_POST['sendmail'])) {
                             $cat = $row['category'];
                             echo '<tr>
                             <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
-                            <td>' . $sno . '</td>
+                            <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -234,10 +273,6 @@ if (isset($_POST['sendmail'])) {
                 ?>
             </tbody>
         </table>
-        <center>
-            <button type="submit" class="btn btn-primary btn-lg" name="sendmail">Send</button>
-            <input class="btn btn-danger btn-lg" type="reset" value="Cancel">
-        </center>
     </form>
 </body>
 
