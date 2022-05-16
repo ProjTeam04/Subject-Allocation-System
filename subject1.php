@@ -1,3 +1,10 @@
+<!-----AUTH SESSION STARTS-------------->
+<?php
+//include auth_session.php file on all user panel pages
+include("auth_session.php");
+?>
+<!-----AUTH SESSION ENDS-------------->
+
 <?php
 $host = "localhost";
 $dbusername = "root";
@@ -32,22 +39,6 @@ if (mysqli_connect_error()) {
             $select1 = mysqli_query($conn, $SELECT);
 
             if (mysqli_num_rows($select1) > 0) {
-<<<<<<< HEAD
-                ?><script> alert("course is already exist!"); </script><?php
-            }
-            else {
-                $stmt = $conn->prepare($INSERT1);
-                $stmt->bind_param("iissssiiiii", $regulation, $semester, $department, $coursecode, $coursetitle, $category, $contactperiods, $lectures, $tutorials, $practicals, $credits);
-                $stmt->execute();
-                header("Location: subject1.php");
-                $stmt->close();
-            }
-        } else {
-            echo "All field are required";
-            die();
-        }
-    }
-=======
 ?><script>
                     alert("course is already exist!");
                 </script><?php
@@ -63,7 +54,6 @@ if (mysqli_connect_error()) {
                         die();
                     }
                 }
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
 
                 if (isset($_POST['updatesubmit'])) {
                     $regulation = $_POST['regulation'];
@@ -78,21 +68,6 @@ if (mysqli_connect_error()) {
                     $practicals = $_POST['practicals'];
                     $credits = $_POST['credits'];
 
-<<<<<<< HEAD
-        $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode' and department='$department'";
-        $result = mysqli_query($conn, $qry);
-
-        if ($result) {
-            header('Location:subject1.php');
-        } 
-        else {
-            echo "Data not updated!";
-        }
-    }
-}
-?>
-
-=======
                     $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
                     $result = mysqli_query($conn, $qry);
 
@@ -104,16 +79,18 @@ if (mysqli_connect_error()) {
                 }
             }
                             ?>
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Subject-Entry</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="fetch.js"></script>
@@ -127,19 +104,19 @@ if (mysqli_connect_error()) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <!-------Subject-list--------------------------->
-                <li class="nav-item active">
-                    <a class="nav-link" href="subject-list.php">Subject-List <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="electivelist.php">Elective List <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:24px"></i>
+                        Subject-List <span class="sr-only">(current)</span></a>
                 </li>
-
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
+                </li>
                 <!--Popup Form for subjects-->
                 <li class="nav-item button">
-                    <button type="button" class="btn btn-close-white" data-toggle="modal" data-target="#myModal">Add Course</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Course</button>
                     <!-- popup starts-->
                     <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -265,62 +242,6 @@ if (mysqli_connect_error()) {
     <!------------------- FILTER STARTS REGULATION DEPARTMENT---------------->
     <form method="post">
         <center>
-<<<<<<< HEAD
-                <div class="btn-group btn-group-inline">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col order-first">
-                                <label>Regulation</label><br>
-                                <select class="form-control" name="regu" id="reg">
-                                    <?php
-                                    $sql = "SELECT distinct regulation from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['regulation']; ?>"><?php echo $rows['regulation']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label>Department</label>
-                                <select class="form-control" name="dept" id="dep">
-                                    <?php
-                                    $sql = "SELECT distinct department from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                                <span></span>
-                            </div>
-                            <div class="col order-last">
-                                <label>Semester</label>
-                                <select class="form-control" name="semes" id="dep">
-                                    <?php
-                                    $sql = "SELECT distinct semester from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                                <span></span>
-                            </div>
-                        </div>
-                        <br>
-                        <div>
-                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Search</button>
-=======
             <div class="btn-group btn-group-inline">
                 <div class="container">
                     <div class="row">
@@ -370,7 +291,6 @@ if (mysqli_connect_error()) {
                                 ?>
                             </select>
                             <span></span>
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
                         </div>
 
                     </div>
@@ -457,25 +377,19 @@ if (mysqli_connect_error()) {
                 $regulation = $_POST['regu'];
                 $department = $_POST['dept'];
                 $semester = $_POST['semes'];
-                if(!empty($regulation) && !empty($department) && !empty($semester)){
+                if (!empty($regulation) && !empty($department) && !empty($semester)) {
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
-                }
-                else if(!empty($regulation) && !empty($department)){
+                } else if (!empty($regulation) && !empty($department)) {
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department'";
-                }
-                else if(!empty($regulation) && !empty($semester)){
+                } else if (!empty($regulation) && !empty($semester)) {
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester'";
-                }
-                else if(!empty($semester) && !empty($department)){
+                } else if (!empty($semester) && !empty($department)) {
                     $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester'";
-                }
-                else if(!empty($regulation)){
+                } else if (!empty($regulation)) {
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation'";
-                }
-                else if(!empty($department)){
+                } else if (!empty($department)) {
                     $select = "SELECT * FROM subjects WHERE department='$department'";
-                }
-                else if(!empty($semester)){
+                } else if (!empty($semester)) {
                     $select = "SELECT * FROM subjects WHERE semester='$semester'";
                 }
                 $select1 = mysqli_query($conn, $select);
@@ -594,12 +508,12 @@ if (mysqli_connect_error()) {
                                                 <div class="form-group">
                                                     <label>Department</label>
                                                     <select class="form-control" name="department" id="depet" required="">
-                                                            <option id="dep" name="cse">Computer Science Engineering</option>
-                                                            <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                                                            <option id="dep" name="mech">Mechanical Engineering</option>
-                                                            <option id="dep" name="geo">Geo Informatics Engineering</option>
-                                                            <option id="dep" name="civil">Civil Engineering</option>
-                                                            <option id="dep" name="humanities">Science and Humanities</option>
+                                                        <option id="dep" name="cse">Computer Science Engineering</option>
+                                                        <option id="dep" name="ece">Electronics & Communication Engineering</option>
+                                                        <option id="dep" name="mech">Mechanical Engineering</option>
+                                                        <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                                        <option id="dep" name="civil">Civil Engineering</option>
+                                                        <option id="dep" name="humanities">Science and Humanities</option>
                                                     </select>
                                                     <span></span>
                                                 </div>

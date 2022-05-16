@@ -79,9 +79,11 @@ if (mysqli_connect_error()) {
     <title>Subject-List</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="fetch.js"></script>
@@ -95,16 +97,19 @@ if (mysqli_connect_error()) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i>Home <span class="sr-only">(current)</span></a>
                 </li>
-                <!-------Subject-list--------------------------->
+                <!-------Subject-entry--------------------------->
                 <li class="nav-item active">
-                    <a class="nav-link" href="subject1.php">Subject-Entry <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="subject1.php">
+                        <i class="fa fa-pencil" style="font-size:24px" aria-hidden="true"></i>
+                        Subject-Entry <span class="sr-only">(current)</span></a>
                 </li>
-
+                
                 <!--Popup Form for subjects-->
                 <li class="nav-item active">
-                    <a class="nav-link" href="electivelist.php">Elective List <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="electivelist.php"><i class="fa fa-th-list" style="font-size:24px"></i>
+                        Elective List <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>

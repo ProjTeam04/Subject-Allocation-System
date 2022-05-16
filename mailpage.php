@@ -25,109 +25,17 @@ if (isset($_POST['sendmail'])) {
 ?>
 
 <!DOCTYPE html>
-<<<<<<< HEAD
- <html>
-     <head>
-        <title>Send-Mail</title>
-        <link rel="icon" href="annaunivlogo.webp">
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="style.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
-    </head>
-     <body>
-         <!--Nav Starts-->
-        <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!---Home-->
-                <ul class="navbar-nav me-auto order-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item button">
-                        <a class="nav-link" href="">Elective <span class="sr-only">(current)</span></a>
-                    </li>
-
-                </ul>
-            </div>
-                <!--Search Bar-->
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" name="search" value="<?php if(isset($_GET['search'])){ echo $_GET['search']; } ?>" placeholder="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
-                </form>
-        </nav>
-        <!--- FILTER STARTS REGULATION DEPARTMENT---------------->
-    <form method="post">
-        <center>
-                <div class="btn-group btn-group-inline">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col order-first">
-                                <label>Regulation</label><br>
-                                <select class="form-control" name="regu" id="reg" required="">
-                                    <?php
-                                    $sql = "SELECT distinct regulation from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['regulation']; ?>"><?php echo $rows['regulation']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label>Department</label>
-                                <select class="form-control" name="dept" id="dep">
-                                    <?php
-                                    $sql = "SELECT distinct department from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                                <span></span>
-                            </div>
-                            <div class="col order-last">
-                                <label>Semester</label>
-                                <select class="form-control" name="semes" id="dep">
-                                    <?php
-                                    $sql = "SELECT distinct semester from subjects";
-                                    $res = mysqli_query($conn, $sql); ?>
-                                    <option value="">select</option><?php
-                                    while ($rows = mysqli_fetch_array($res)) {
-                                    ?>
-                                        <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
-                                    <?php
-                                                                    }
-                                    ?>
-                                </select>
-                                <span></span>
-                            </div>
-
-                        </div>
-                        <br>
-                        <div>
-                            <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Search</button>
-=======
 <html>
 
 <head>
-    <title>Send-Mail</title>
+    <title>Elective-Allocation</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -140,10 +48,12 @@ if (isset($_POST['sendmail'])) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="subject1.php">Subject-Entry <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="electivelist.php"><i class="fa fa-envelope" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Electives </a>
                 </li>
             </ul>
         </div>
@@ -207,7 +117,7 @@ if (isset($_POST['sendmail'])) {
                                 ?>
                             </select>
                             <span></span>
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
+
                         </div>
 
                     </div>
@@ -235,44 +145,6 @@ if (isset($_POST['sendmail'])) {
             </thead>
             <tbody>
                 <?php
-<<<<<<< HEAD
-                    $sql="SELECT * from subjects where not (category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5'))";
-                    $result=mysqli_query($conn,$sql);
-                    $number=1;
-                    if(isset($_GET['search'])){
-                        $filtervalues = $_GET['search'];
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' ";
-                        $qry_run = mysqli_query($conn,$qry);
-
-                        if(mysqli_num_rows($qry_run) > 0){
-                            $number=1;
-                            while($row=mysqli_fetch_assoc($qry_run)){
-                            $sno=$row['sno'];
-                            $reg=$row['regulation'];
-                            $sem=$row['semester'];
-                            $dep=$row['department'];
-                            $cc=$row['coursecode'];
-                            $ct=$row['coursetitle'];
-                            $cat=$row['category'];
-                            echo'<tr>
-                            <td>'.$number.'</td>
-                            <td>'.$reg.'</td>
-                            <td>'.$sem.'</td>
-                            <td>'.$dep.'</td>
-                            <td>'.$cc.'</td>
-                            <td>'.$ct.'</td>
-                            <td>'.$cat.'</td>
-                            </tr>';
-                            $number++;
-                            }
-                        }
-                        else{
-                            ?>
-                                <tr>
-                                    <td colspan="13">No record found</td>
-                                </tr>
-                            <?php
-=======
                 $sql = "SELECT * from subjects";
                 $result = mysqli_query($conn, $sql);
                 $number = 1;
@@ -291,7 +163,6 @@ if (isset($_POST['sendmail'])) {
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
                             echo '<tr>
-                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
                             <td>' . $sno . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
@@ -300,7 +171,6 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
                         }
                     } else {
                 ?>
@@ -314,33 +184,9 @@ if (isset($_POST['sendmail'])) {
                     $department = $_POST['dept'];
                     $semester = $_POST['semes'];
 
-<<<<<<< HEAD
-                if(!empty($regulation) && !empty($department) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($regulation) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($regulation) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($semester) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($regulation)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                $select1 = mysqli_query($conn, $select);
-=======
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
                     $select1 = mysqli_query($conn, $select);
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
+
 
                     if (mysqli_num_rows($select1) > 0) {
                         while ($row = mysqli_fetch_assoc($select1)) {
@@ -352,7 +198,6 @@ if (isset($_POST['sendmail'])) {
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
                             echo '<tr>
-                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
                             <td>' . $sno . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
@@ -379,12 +224,7 @@ if (isset($_POST['sendmail'])) {
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
                         echo '<tr>
-<<<<<<< HEAD
-                            <td>'.$number.'</td>
-=======
-                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
                             <td>' . $number . '</td>
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -392,41 +232,10 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
-<<<<<<< HEAD
-                            $number++;
-=======
                         $number++;
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
                     }
                 }
-<<<<<<< HEAD
-            }
-                    else if($result){
-                        $number=1;
-                        while($row=mysqli_fetch_assoc($result)){
-                            $sno=$row['sno'];
-                            $reg=$row['regulation'];
-                            $sem=$row['semester'];
-                            $dep=$row['department'];
-                            $cc=$row['coursecode'];
-                            $ct=$row['coursetitle'];
-                            $cat=$row['category'];
-                            echo'<tr>
-                            <td>'.$number.'</td>
-                            <td>'.$reg.'</td>
-                            <td>'.$sem.'</td>
-                            <td>'.$dep.'</td>
-                            <td>'.$cc.'</td>
-                            <td>'.$ct.'</td>
-                            <td>'.$cat.'</td>
-                            </tr>';
-                            $number++;
-                        }
-                    }
-                    ?>
-=======
                 ?>
->>>>>>> 7466f07e252c1f5dfdf6952ae501c303018d97ba
             </tbody>
         </table>
         <center>
