@@ -31,14 +31,11 @@ if (isset($_POST['sendmail'])) {
     <title>Elective-Allocation</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <link rel="stylesheet" href="styles.css">
-=======
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -59,12 +56,11 @@ if (isset($_POST['sendmail'])) {
                         Home</a>
                 </li>
                 <li class="nav-item active">
-<<<<<<< HEAD
+
                     <a class="nav-link text-white" href="electivelist.php"><i class="fa fa-envelope" style="font-size:24px"></i><span class="sr-only">(current)</span>
                         Electives </a>
-=======
-                    <a class="nav-link" href="electivelist.php">Select Electives <span class="sr-only">(current)</span></a>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
+
+                    <a class="nav-link text-white" href="electivelist.php">Select Electives <span class="sr-only">(current)</span></a>
                 </li>
                 <!--- semester -->
                 <li class="nav-item active">
@@ -161,10 +157,7 @@ if (isset($_POST['sendmail'])) {
                                 ?>
                             </select>
                             <span></span>
-<<<<<<< HEAD
 
-=======
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                         </div>
 
                     </div>
@@ -192,9 +185,7 @@ if (isset($_POST['sendmail'])) {
             </thead>
             <tbody>
                 <?php
-<<<<<<< HEAD
                 $sql = "SELECT * from subjects";
-=======
                 $sqry="SELECT * from academicyear order by sno desc limit 1";
                 $sem = mysqli_query($conn, $sqry);
                 $rows = mysqli_fetch_assoc($sem);
@@ -209,7 +200,6 @@ if (isset($_POST['sendmail'])) {
                 }
                 $qy="SELECT * from electives where year='$yr' and sem='$semes'";
                 $res = mysqli_query($conn, $qy);
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                 $result = mysqli_query($conn, $sql);
                 $number = 1;
                 if (isset($_GET['search'])) {
@@ -239,11 +229,8 @@ if (isset($_POST['sendmail'])) {
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
                             echo '<tr>
-<<<<<<< HEAD
                             <td>' . $sno . '</td>
-=======
                             <td>' . $number . '</td>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -251,10 +238,8 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
-<<<<<<< HEAD
-=======
+
                             $number++;
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                         }
                         while ($row = mysqli_fetch_assoc($res)) {
                         $sno = $row['sno'];
@@ -287,12 +272,10 @@ if (isset($_POST['sendmail'])) {
                     $regulation = $_POST['regu'];
                     $department = $_POST['dept'];
                     $semester = $_POST['semes'];
-<<<<<<< HEAD
 
                     $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
                     $select1 = mysqli_query($conn, $select);
 
-=======
                     $sqry="SELECT * from academicyear order by sno desc limit 1";
                     $sem = mysqli_query($conn, $sqry);
                     $rows = mysqli_fetch_assoc($sem);
@@ -363,7 +346,6 @@ if (isset($_POST['sendmail'])) {
                 }
                     $res = mysqli_query($conn, $qy);
                     $select1 = mysqli_query($conn, $select);
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
 
                     if (mysqli_num_rows($select1) > 0) {
                         while ($row = mysqli_fetch_assoc($select1)) {
@@ -375,11 +357,8 @@ if (isset($_POST['sendmail'])) {
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
                             echo '<tr>
-<<<<<<< HEAD
                             <td>' . $sno . '</td>
-=======
                             <td>' . $number . '</td>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
@@ -426,10 +405,7 @@ if (isset($_POST['sendmail'])) {
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
                         echo '<tr>
-<<<<<<< HEAD
-=======
-                            
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
+
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
@@ -440,8 +416,7 @@ if (isset($_POST['sendmail'])) {
                             </tr>';
                         $number++;
                     }
-<<<<<<< HEAD
-=======
+
                     while ($row = mysqli_fetch_assoc($res)) {
                         $sno = $row['sno'];
                         $reg = $row['regulation'];
@@ -462,7 +437,6 @@ if (isset($_POST['sendmail'])) {
                             </tr>';
                         $number++;
                     }
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                 }
                 ?>
             </tbody>

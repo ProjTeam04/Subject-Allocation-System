@@ -63,12 +63,10 @@ if (isset($_POST['sendmail'])) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-<<<<<<< HEAD
                     <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-arrow-left" style="font-size:24px"></i>
                         Back<span class="sr-only">(current)</span></a>
-=======
+
                     <a class="nav-link" href="mailpage.php"> Back <span class="sr-only">(current)</span></a>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
                 </li>
 
             </ul>

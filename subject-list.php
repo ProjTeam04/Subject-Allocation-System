@@ -6,72 +6,7 @@ $dbname = "suball";
 
 //create connection
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-
-if (mysqli_connect_error()) {
-    die('Connect Error (' . mysqli_connect_errno() . ') '
-        . mysqli_connect_error());
-} else {
-    if (isset($_POST['submit'])) {
-        $regulation = $_POST['regulation'];
-        $semester = $_POST['semester'];
-        $department = $_POST['department'];
-        $coursecode = $_POST['coursecode'];
-        $coursetitle = $_POST['coursetitle'];
-        $category = $_POST['category'];
-        $contactperiods = $_POST['contactperiods'];
-        $lectures = $_POST['lectures'];
-        $tutorials = $_POST['tutorials'];
-        $practicals = $_POST['practicals'];
-        $credits = $_POST['credits'];
-
-        if (!empty($regulation) || !empty($semester) || !empty($department) ||  !empty($coursecode) || !empty($coursetitle) || !empty($category) || !empty($contactperiods) || !empty($lectures) || !empty($tutorials) || !empty($practicals) || !empty($credits)) {
-
-
-            $INSERT1 = "INSERT Into subjects (regulation,semester,department,coursecode,coursetitle,category,contactperiods,lectures,tutorials,practicals,credits) values(?,?,?,?,?,?,?,?,?,?,?)";
-            $SELECT = "SELECT * from subjects where department='$department' and coursecode='$coursecode'";
-            $select1 = mysqli_query($conn, $SELECT);
-
-            if (mysqli_num_rows($select1) > 0) {
-?><script>
-                    alert("course is already exist!");
-                </script><?php
-                        } else {
-                            $stmt = $conn->prepare($INSERT1);
-                            $stmt->bind_param("iissssiiiii", $regulation, $semester, $department, $coursecode, $coursetitle, $category, $contactperiods, $lectures, $tutorials, $practicals, $credits);
-                            $stmt->execute();
-                            header("Location: subject1.php");
-                        }
-                        $stmt->close();
-                    } else {
-                        echo "All field are required";
-                        die();
-                    }
-                }
-
-                if (isset($_POST['updatesubmit'])) {
-                    $regulation = $_POST['regulation'];
-                    $semester = $_POST['semester'];
-                    $department = $_POST['department'];
-                    $coursecode = $_POST['coursecode'];
-                    $coursetitle = $_POST['coursetitle'];
-                    $category = $_POST['category'];
-                    $contactperiods = $_POST['contactperiods'];
-                    $lectures = $_POST['lectures'];
-                    $tutorials = $_POST['tutorials'];
-                    $practicals = $_POST['practicals'];
-                    $credits = $_POST['credits'];
-
-                    $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
-                    $result = mysqli_query($conn, $qry);
-
-                    if ($result) {
-                        header("Location:subject1.php");
-                    } else {
-                        echo 'Data not updated!';
-                    }
-                }
-            }
-                            ?>
+?>
 <!DOCTYPE html>
 <html>
 
@@ -99,18 +34,54 @@ if (mysqli_connect_error()) {
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i>Home <span class="sr-only">(current)</span></a>
                 </li>
+
                 <!-------Subject-entry--------------------------->
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="subject1.php">
                         <i class="fa fa-pencil" style="font-size:24px" aria-hidden="true"></i>
                         Subject-Entry <span class="sr-only">(current)</span></a>
                 </li>
-                
-                <!--Popup Form for subjects-->
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="electivelist.php"><i class="fa fa-th-list" style="font-size:24px"></i>
-                        Elective List <span class="sr-only">(current)</span></a>
-                </li>
+
+               
+            </ul>
+
+            <li class="nav-item button">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Received subjects</button>
+                <!-- popup starts-->
+                <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title" style="margin: 0 auto"><b>Subject Lists</b></h1>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card w-100" style="width: 18rem; margin: 0 auto">
+                                    <div class="card-body">
+                                        <table class="table table-bordered table-primary">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Select</th>
+                                                    <th scope="col">SI.No</th>
+                                                    <th scope="col">Regulation</th>
+                                                    <th scope="col">Semester</th>
+                                                    <th scope="col">Department</th>
+                                                    <th scope="col">Course Code</th>
+                                                    <th scope="col">Course Title</th>
+                                                    <th scope="col">Category</th>
+                                                    <th scope="col"> Assigned</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- popup ends-->
+            </li>
             </ul>
         </div>
         <!--Search Bar-->
@@ -190,6 +161,7 @@ if (mysqli_connect_error()) {
     <table class="table table-bordered table-primary">
         <thead>
             <tr>
+                <th scope="col">Select</th>
                 <th scope="col">SI.No</th>
                 <th scope="col">Regulation</th>
                 <th scope="col">Semester</th>
@@ -197,12 +169,6 @@ if (mysqli_connect_error()) {
                 <th scope="col">Course Code</th>
                 <th scope="col">Course Title</th>
                 <th scope="col">Category</th>
-                <th scope="col">Contact Periods</th>
-                <th scope="col">L</th>
-                <th scope="col">T</th>
-                <th scope="col">P</th>
-                <th scope="col">C</th>
-                <th scope="col">Operations</th>
             </tr>
         </thead>
         <tbody>
@@ -224,28 +190,15 @@ if (mysqli_connect_error()) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        $cp = $row['contactperiods'];
-                        $lec = $row['lectures'];
-                        $tut = $row['tutorials'];
-                        $prac = $row['practicals'];
-                        $cred = $row['credits'];
                         echo '<tr>
-                            <th scope="row">' . $number . '</th>
+                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
+                            <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
-                            <td>' . $cp . '</td>
-                            <td>' . $lec . '</td>
-                            <td>' . $tut . '</td>
-                            <td>' . $prac . '</td>
-                            <td>' . $cred . '</td>
-                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
-                                    
-                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
-                            </td>
                             </tr>';
                         $number++;
                     }
@@ -273,28 +226,15 @@ if (mysqli_connect_error()) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        $cp = $row['contactperiods'];
-                        $lec = $row['lectures'];
-                        $tut = $row['tutorials'];
-                        $prac = $row['practicals'];
-                        $cred = $row['credits'];
                         echo '<tr>
-                            <th scope="row">' . $number . '</th>
+                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
+                            <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
-                            <td>' . $cp . '</td>
-                            <td>' . $lec . '</td>
-                            <td>' . $tut . '</td>
-                            <td>' . $prac . '</td>
-                            <td>' . $cred . '</td>
-                            <td><button type="button" class="btn btn-primary editbutton">Update</button>
-                                    
-                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
-                            </td>
                             </tr>';
                         $number++;
                     }
@@ -320,130 +260,19 @@ if (mysqli_connect_error()) {
                     $prac = $row['practicals'];
                     $cred = $row['credits'];
                     echo '<tr>
-                            <th scope="row">' . $number . '</th>
+                            <td><input type="checkbox" class="form-check-input" value="' . $cc . '" name="subjects[]"></td>
+                            <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
-                            <td>' . $cp . '</td>
-                            <td>' . $lec . '</td>
-                            <td>' . $tut . '</td>
-                            <td>' . $prac . '</td>
-                            <td>' . $cred . '</td>
-                            <td><button type="button" class="btn btn-primary editbutton">Update</button>                        
-                            
-                            <button type="button" class="btn btn-danger"><a href="delete.php?deleteid=' . $sno . '" class="text-light">Delete</a></button>
-                            </td>
                             </tr>';
                     $number++;
                 }
             }
             ?>
-            <div id="myeditmodel" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title" style="margin: 0 auto"><b>Edit Course Details</b></h1>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-
-                            <div class="card w-100" style="width: 18rem; margin: 0 auto">
-                                <div class="card-body">
-                                    <form method="post">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Regulation</label>
-                                                    <input type="number" class="form-control" name="regulation" id="regu" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Semester</label>
-                                                    <select class="form-control" name="semester" id="sem" required="">
-                                                        <option id="sem" name="odd1">1</option>
-                                                        <option id="sem" name="even1">2</option>
-                                                        <option id="sem" name="odd2">3</option>
-                                                        <option id="sem" name="even2">4</option>
-                                                        <option id="sem" name="odd3">5</option>
-                                                        <option id="sem" name="even3">6</option>
-                                                        <option id="sem" name="odd4">7</option>
-                                                        <option id="sem" name="even4">8</option>
-                                                    </select>
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Department</label>
-                                                    <select class="form-control" name="department" id="dep" required="">
-                                                        <option id="dep" name="cse">Computer Science Engineering</option>
-                                                        <option id="dep" name="ece">Electronics & Communication Engineering</option>
-                                                        <option id="dep" name="mech">Mechanical Engineering</option>
-                                                        <option id="dep" name="geo">Geo Informatics Engineering</option>
-                                                        <option id="dep" name="civil">Civil Engineering</option>
-                                                        <option id="dep" name="humanities">Science and Humanities</option>
-                                                    </select>
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Course code</label>
-                                                    <input type="text" class="form-control" name="coursecode" id="cc" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Course title</label>
-                                                    <input type="text" class="form-control" name="coursetitle" id="ct" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Category</label>
-                                                    <input type="text" class="form-control" name="category" id="cat" required="">
-                                                    <span></span>
-                                                </div>
-
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Contact Periods</label>
-                                                    <input type="number" class="form-control" name="contactperiods" id="cp" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Lectures</label>
-                                                    <input type="number" class="form-control" name="lectures" id="lec" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Tutorials</label>
-                                                    <input type="number" class="form-control" name="tutorials" id="tut" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Practicals</label>
-                                                    <input type="number" class="form-control" name="practicals" id="prac" required="">
-                                                    <span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Credits</label>
-                                                    <input type="number" class="form-control" name="credits" id="cred" required="">
-                                                    <span></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" name="updatesubmit">Update</button>
-                                            <input class="btn btn-danger" type="reset" value="Clear">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </tbody>
     </table>
     <!--Course Table Ends-->

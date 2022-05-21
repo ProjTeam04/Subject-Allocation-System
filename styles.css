@@ -45,3 +45,11 @@ div i{
     font-weight: 200;
 }
 
+footer{
+    font-size: 120%;
+    font-weight: 200;
+}
+
+h2 .slide{
+    font-display: blue;
+ }

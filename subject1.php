@@ -39,11 +39,10 @@ if (mysqli_connect_error()) {
             $select1 = mysqli_query($conn, $SELECT);
 
             if (mysqli_num_rows($select1) > 0) {
-<<<<<<< HEAD
-?><script>
-=======
+
+
         ?><script>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
+
                     alert("course is already exist!");
                 </script><?php
                         } else {
@@ -82,11 +81,10 @@ if (mysqli_connect_error()) {
                     }
                 }
             }
-<<<<<<< HEAD
+
                             ?>
-=======
+
  ?>
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
 <!DOCTYPE html>
 <html>
 
@@ -115,7 +113,7 @@ if (mysqli_connect_error()) {
                     <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
                         Home</a>
                 </li>
-<<<<<<< HEAD
+
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:24px"></i>
                         Subject-List <span class="sr-only">(current)</span></a>
@@ -123,8 +121,7 @@ if (mysqli_connect_error()) {
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
                 </li>
-=======
->>>>>>> c9bb8a8314eed22859f680c779adc4843a807e8c
+
                 <!--Popup Form for subjects-->
                 <li class="nav-item button">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Course</button>
