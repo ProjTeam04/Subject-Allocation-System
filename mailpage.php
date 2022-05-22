@@ -6,37 +6,23 @@ $dbname = "suball";
 
 //create connection
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-$year = 0;
-if (isset($_POST['sendmail'])) {
-    if (isset($_POST['subjects'])) {
-        $subjects = $_POST['subjects'];
-        echo "you selected the following subjects:<br>";
-        foreach ($subjects as $key => $value) {
-            $query = "SELECT regulation, semester, department, coursetitle from subjects Where coursecode = '$value'";
-            $qry_run = mysqli_query($conn, $query);
-            $row = mysqli_fetch_assoc($qry_run);
-            echo $value . '-' . $row['regulation'];
-            echo "<br>";
-        }
-    } else {
-        echo "you should select atleast one subject";
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Send-Mail</title>
+    <title>Elective-Allocation</title>
     <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -47,12 +33,14 @@ if (isset($_POST['sendmail'])) {
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!---Home-->
-            <ul class="navbar-nav me-auto order-0">
+             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Home</a>
                 </li>
+
                 <li class="nav-item active">
-                    <a class="nav-link" href="electivelist.php">Select Electives <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="electivelist.php">Select Electives <span class="sr-only">(current)</span></a>
                 </li>
                 <!--- semester -->
                 <li class="nav-item active">
@@ -105,7 +93,7 @@ if (isset($_POST['sendmail'])) {
                     <div class="row">
                         <div class="col order-first">
                             <label>Regulation</label><br>
-                            <select class="form-control" name="regu" id="reg">
+                            <select class="form-control" name="regu" id="reg" required="">
                                 <?php
                                 $sql = "SELECT distinct regulation from subjects";
                                 $res = mysqli_query($conn, $sql); ?>
@@ -149,6 +137,7 @@ if (isset($_POST['sendmail'])) {
                                 ?>
                             </select>
                             <span></span>
+
                         </div>
 
                     </div>
@@ -227,6 +216,7 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
+
                             $number++;
                         }
                         while ($row = mysqli_fetch_assoc($res)) {

@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*Nav Bar*/
+.navbar {
+    font-size: 120%;
+}
+/*Nav Bar*/
+
+.navbar nav
+{
+    list-style: none;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+.navbar a {
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    text-decoration: none;
+    background-color: black;
+    border-radius: 9px 10px;
+}
+div i{
+    color: white;
+ }
+
+/*Popup Form*/
+.modal-title{
+    color: black;
+    font-size: 120%;
+    font-weight: 200;
+}
+.modal-footer,
+.modal-body {
+    color: black;
+    font-size: medium;
+    font-weight: 200;
+}
+
