@@ -156,7 +156,7 @@ include("auth_session.php");
               <b>Dr.K.Saravanan</b><br>
               Assistant Professor & Head<br>
               Department of Computer Science & Engineering<br>
-            <h5 class="text-uppercase text-blue"><i class="fa fa-envelope"></i><b>Contact</b></h5><br>
+            <h5 class="text-uppercase text-blue"><b>Contact</b></h5><br>
             <a>saravanan.krishnan@auttvl.ac.in</a>
             </p>
           </div>
