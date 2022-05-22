@@ -39,10 +39,14 @@ if (mysqli_connect_error()) {
             $select1 = mysqli_query($conn, $SELECT);
 
             if (mysqli_num_rows($select1) > 0) {
+<<<<<<< HEAD
 
 
         ?><script>
 
+=======
+        ?><script>
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
                     alert("course is already exist!");
                 </script><?php
                         } else {
@@ -81,9 +85,12 @@ if (mysqli_connect_error()) {
                     }
                 }
             }
+<<<<<<< HEAD
 
                             ?>
 
+=======
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
  ?>
 <!DOCTYPE html>
 <html>
@@ -114,6 +121,7 @@ if (mysqli_connect_error()) {
                         Home</a>
                 </li>
 
+<<<<<<< HEAD
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:24px"></i>
                         Subject-List <span class="sr-only">(current)</span></a>
@@ -122,6 +130,8 @@ if (mysqli_connect_error()) {
                     <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
                 </li>
 
+=======
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
                 <!--Popup Form for subjects-->
                 <li class="nav-item button">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Course</button>
@@ -255,7 +265,7 @@ if (mysqli_connect_error()) {
                     <div class="row">
                         <div class="col order-first">
                             <label>Regulation</label><br>
-                            <select class="form-control" name="regu" id="reg">
+                            <select class="form-control" name="regu" id="reg" required="">
                                 <?php
                                 $sql = "SELECT distinct regulation from subjects";
                                 $res = mysqli_query($conn, $sql); ?>

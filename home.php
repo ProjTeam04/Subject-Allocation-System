@@ -11,7 +11,11 @@ include("auth_session.php");
 
 <head>
   <link rel="icon" href="annaunivlogo.webp">
+<<<<<<< HEAD
   <title>Home - Anna University Regional Campus-Tirunelveli</title>
+=======
+  <title>AURCT</title>
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -29,7 +33,6 @@ include("auth_session.php");
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!---Home-->
       <ul class="navbar-nav me-auto order-0">
-
         <li class="nav-item active">
           <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:29px"></i><span class="sr-only">(current)</span> Home</a>
         </li>
@@ -39,11 +42,12 @@ include("auth_session.php");
         </li>
 
         <li class="nav-item active">
+          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item active">
           <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:29px"></i>
             Subject-List <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
         </li>
       </ul>
     </div>
@@ -71,6 +75,7 @@ include("auth_session.php");
     <h1 style="color: #00008B; font-family: serif">Anna University Regional Campus-Tirunelveli</b></h1>
   </center>
   <center><img class="logo" src="annaunivlogo.webp" alt="logo" width="200" height="160"></center>
+<<<<<<< HEAD
   <br>
   <p style="color: #000000; font-size: 120%; ">
     <marquee scrollamount="4"><b>"Scientists investigate that which already is; Engineers create that which has never been", "The way to succeed is to double your failure rate." - Albert Einstein</b></marquee>
@@ -214,10 +219,35 @@ include("auth_session.php");
       </div>
     </div>
     <br>
+=======
+  <br><br>
+ 
+    <center>
+      <figure class="text-center">
+          <blockquote class="blockquote">
+            <marquee behavior="scroll" direction="left" scrollamound="50"><h3><p>The purpose of education is to make good human beings with skill and expertise... Enlightened human beings can be created by teachers.</p></h3></marquee>
+          </blockquote><h4>
+          <figcaption class="blockquote-footer">
+            <cite title="Source Title">A.P.J. Abdul Kalam</cite>
+          </figcaption></h4>
+        </figure>
+      <div class="form">
+        <?php
+        require('db.php');
+        $email = $_SESSION['username'];
+        $sql ="SELECT username from users where email='$email'";
+        $res = mysqli_query($con, $sql);
+        $rows = mysqli_fetch_array($res);
+        ?>
+        <h3>Welcome, <?php echo $rows['username']; ?> !</h3>
+      </div>
+    </center>
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
 
   </center>
 </body>
 
+<<<<<<< HEAD
 <!--------------FOOTER STARTS--------------------------------------->
 
 <footer class="bg-dark text-white text-center text-lg-start">
@@ -289,4 +319,6 @@ include("auth_session.php");
 
 
 
+=======
+>>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
 </html>

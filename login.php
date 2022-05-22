@@ -1,19 +1,5 @@
- <html>
-
- <head>
-    <title>Login</title>
-    <link rel="icon" href="annaunivlogo.webp">
-    <link rel="stylesheet" href="stylelogin.css">
- </head>
-
- <body>
-    <br><br><br><img class="logo" src="annaunivlogo.webp" alt="logo" width="200" height="160">
-    <div class="center">
-       <h1>
-          <center>Welcome! Login Here</center>
-       </h1>
-
-       <?php
+ 
+<?php
          require('db.php');
          session_start();
          if (isset($_POST['username'])) {
@@ -37,17 +23,31 @@
                "<div class='form'>
                <center>
                   <h3>Incorrect Username/password</h3><br/>
-                  <p class='link'>Click here to <a href='login.php'>Login</a> again</p>
                   </center>
                   </div>";
             }
-         } else {
-         ?>
+         }
+
+?>
+ <!DOCTYPE html>
+ <html>
+ <head>
+    <title>Login</title>
+    <link rel="icon" href="annaunivlogo.webp">
+    <link rel="stylesheet" href="stylelogin.css">
+ </head>
+
+ <body>
+    <br><br><br><img class="logo" src="annaunivlogo.webp" alt="logo" width="200" height="160">
+    <div class="center">
+       <h1>
+          <center>Welcome! Login Here</center>
+       </h1>
           <form method="post">
              <center>
                 <div class="txt_field">
                    <input type="text" name="username" required="">
-                   <label>Username</label>
+                   <label>Email</label>
                 </div>
                 <div class="txt_field">
                    <input type="password" name="password" required="">
@@ -62,8 +62,5 @@
              </center>
           </form>
     </div>
- <?php
-   }
-   ?>
  </body>
  </html>
