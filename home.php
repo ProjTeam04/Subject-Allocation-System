@@ -2,6 +2,20 @@
 <?php
 //include auth_session.php file on all user panel pages
 include("auth_session.php");
+$host = "localhost";
+$dbusername = "root";
+$dbpassword = "";
+$dbname = "suball";
+
+//create connection
+$conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+
+
+$email = $_SESSION['username'];
+$sql = "SELECT username FROM users WHERE email='$email'";
+$res = mysqli_query($conn,$sql);
+$row = mysqli_fetch_assoc($res);
+$name = $row['username'];
 ?>
 <!-----AUTH SESSION ENDS-------------->
 
@@ -53,6 +67,15 @@ include("auth_session.php");
         </li>
       </ul>
     </div>
+
+    <!--PROFILE-->
+      <li class="nav-item active">
+          <i class="fa fa-user" style="font-size:29px"></i>&nbsp;
+          <?php
+            echo $name;
+           ?>&ensp;
+          </li>
+
     <!-----------------LOGIN BUTTON-------------->
     <?php
     if (isset($_SESSION['username'])) {
