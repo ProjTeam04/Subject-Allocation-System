@@ -53,3 +53,16 @@ footer{
 h2 .slide{
     font-display: blue;
  }
+
+ @page{
+    size: A4;
+    margin: 0;
+ }
+<script>
+@media print{
+    #print-btn{
+        display: none;
+        visibility: none;
+    }
+}
+</script>

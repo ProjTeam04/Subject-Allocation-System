@@ -1,11 +1,9 @@
-<!-----AUTH SESSION STARTS-------------->
 <?php
+//<!-----AUTH SESSION STARTS-------------->
 //include auth_session.php file on all user panel pages
 include("auth_session.php");
-?>
-<!-----AUTH SESSION ENDS-------------->
+//<!-----AUTH SESSION ENDS-------------->
 
-<?php
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
@@ -13,6 +11,11 @@ $dbname = "suball";
 
 //create connection
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+$email = $_SESSION['username'];
+$query = "SELECT department from users where email = '$email'";
+$re = mysqli_query($conn, $query);
+$ro = mysqli_fetch_assoc($re);
+$udep = $ro['department'];
 
 if (mysqli_connect_error()) {
     die('Connect Error (' . mysqli_connect_errno() . ') '
@@ -39,14 +42,7 @@ if (mysqli_connect_error()) {
             $select1 = mysqli_query($conn, $SELECT);
 
             if (mysqli_num_rows($select1) > 0) {
-<<<<<<< HEAD
-
-
         ?><script>
-
-=======
-        ?><script>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
                     alert("course is already exist!");
                 </script><?php
                         } else {
@@ -75,7 +71,7 @@ if (mysqli_connect_error()) {
                     $practicals = $_POST['practicals'];
                     $credits = $_POST['credits'];
 
-                    $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', department='$department', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode'";
+                    $qry = "UPDATE subjects SET regulation = '$regulation', semester = '$semester', coursetitle='$coursetitle', category='$category', contactperiods='$contactperiods', lectures='$lectures', tutorials='$tutorials', practicals='$practicals', credits='$credits' WHERE coursecode='$coursecode' and department='$department'";
                     $result = mysqli_query($conn, $qry);
 
                     if ($result) {
@@ -85,12 +81,6 @@ if (mysqli_connect_error()) {
                     }
                 }
             }
-<<<<<<< HEAD
-
-                            ?>
-
-=======
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
  ?>
 <!DOCTYPE html>
 <html>
@@ -120,18 +110,9 @@ if (mysqli_connect_error()) {
                     <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
                         Home</a>
                 </li>
-
-<<<<<<< HEAD
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:24px"></i>
-                        Subject-List <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
-                </li>
-
-=======
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
+                    <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:24px"></i>Subject-Allocation<span class="sr-only">(current)</span></a>
+        </li>
                 <!--Popup Form for subjects-->
                 <li class="nav-item button">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Course</button>
@@ -278,22 +259,7 @@ if (mysqli_connect_error()) {
                                 ?>
                             </select>
                         </div>
-                        <div class="col">
-                            <label>Department</label>
-                            <select class="form-control" name="dept" id="dep">
-                                <?php
-                                $sql = "SELECT distinct department from subjects";
-                                $res = mysqli_query($conn, $sql); ?>
-                                <option value="">select</option><?php
-                                                                while ($rows = mysqli_fetch_array($res)) {
-                                                                ?>
-                                    <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
-                                <?php
-                                                                }
-                                ?>
-                            </select>
-                            <span></span>
-                        </div>
+                
                         <div class="col order-last">
                             <label>Semester</label>
                             <select class="form-control" name="semes" id="dep">
@@ -310,11 +276,10 @@ if (mysqli_connect_error()) {
                             </select>
                             <span></span>
                         </div>
-
                     </div>
                     <br>
                     <div>
-                        <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Submit</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="filtersubmit">Filter</button>
 
                     </div>
                 </div>
@@ -328,26 +293,26 @@ if (mysqli_connect_error()) {
                 <th scope="col">SI.No</th>
                 <th scope="col">Regulation</th>
                 <th scope="col">Semester</th>
-                <th scope="col">Department</th>
-                <th scope="col">Course Code</th>
-                <th scope="col">Course Title</th>
+                <th scope="col" width="20%">Department</th>
+                <th scope="col" width="10%">Course Code</th>
+                <th scope="col" width="20%">Course Title</th>
                 <th scope="col">Category</th>
-                <th scope="col">Contact Periods</th>
+                <th scope="col" width="10%">Contact Periods</th>
                 <th scope="col">L</th>
                 <th scope="col">T</th>
                 <th scope="col">P</th>
                 <th scope="col">C</th>
-                <th scope="col">Operations</th>
+                <th scope="col" width="15%">Operations</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            $sql = "SELECT * from subjects";
+            $sql = "SELECT * from subjects where department = '$udep' order by semester,regulation";
             $result = mysqli_query($conn, $sql);
             $number = 1;
             if (isset($_GET['search'])) {
                 $filtervalues = $_GET['search'];
-                $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' ";
+                $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and department = '$udep' order by semester,regulation";
                 $qry_run = mysqli_query($conn, $qry);
 
                 if (mysqli_num_rows($qry_run) > 0) {
@@ -393,22 +358,13 @@ if (mysqli_connect_error()) {
                 }
             } else if (isset($_POST['filtersubmit'])) {
                 $regulation = $_POST['regu'];
-                $department = $_POST['dept'];
                 $semester = $_POST['semes'];
-                if (!empty($regulation) && !empty($department) && !empty($semester)) {
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester'";
-                } else if (!empty($regulation) && !empty($department)) {
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department'";
-                } else if (!empty($regulation) && !empty($semester)) {
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester'";
-                } else if (!empty($semester) && !empty($department)) {
-                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester'";
-                } else if (!empty($regulation)) {
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation'";
-                } else if (!empty($department)) {
-                    $select = "SELECT * FROM subjects WHERE department='$department'";
-                } else if (!empty($semester)) {
-                    $select = "SELECT * FROM subjects WHERE semester='$semester'";
+                 if (!empty($regulation) && !empty($semester)) {
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and department = '$udep' order by semester,regulation";
+                }else if (!empty($regulation)) {
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department = '$udep' order by semester,regulation";
+                }else if (!empty($semester)) {
+                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department = '$udep' and semester='$semester' order by semester,regulation";
                 }
                 $select1 = mysqli_query($conn, $select);
 

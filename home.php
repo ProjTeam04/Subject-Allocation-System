@@ -11,11 +11,8 @@ include("auth_session.php");
 
 <head>
   <link rel="icon" href="annaunivlogo.webp">
-<<<<<<< HEAD
+
   <title>Home - Anna University Regional Campus-Tirunelveli</title>
-=======
-  <title>AURCT</title>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -42,11 +39,16 @@ include("auth_session.php");
         </li>
 
         <li class="nav-item active">
-          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
+          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Subject-Allocation<span class="sr-only">(current)</span></a>
         </li>
 
         <li class="nav-item active">
-          <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:29px"></i>
+          <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:29px"></i>
+            Send/Receive <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link text-white" href="listgeneration.php"><i class="fa fa-list" style="font-size:29px"></i>
             Subject-List <span class="sr-only">(current)</span></a>
         </li>
       </ul>
@@ -75,7 +77,7 @@ include("auth_session.php");
     <h1 style="color: #00008B; font-family: serif">Anna University Regional Campus-Tirunelveli</b></h1>
   </center>
   <center><img class="logo" src="annaunivlogo.webp" alt="logo" width="200" height="160"></center>
-<<<<<<< HEAD
+
   <br>
   <p style="color: #000000; font-size: 120%; ">
     <marquee scrollamount="4"><b>"Scientists investigate that which already is; Engineers create that which has never been", "The way to succeed is to double your failure rate." - Albert Einstein</b></marquee>
@@ -147,6 +149,89 @@ include("auth_session.php");
   </center><br>
   <!------------------IMAGE SLIDER ENDS------------------------------->
 
+  <!------------------- SYLLABUS --------------------------------------->
+
+  <center>
+    <div class="container-fluid text-center">
+      <h3 style="color:blue"><b>CURRICULUM & SYLLABI</b></h3> <br>
+      <div class="row">
+        <div class="card col-sm-2 col-sm-offset-1">
+          <div class="card card-block text-xs-center">
+            <h4 class="card-title"><a href="#" class="btn btn-primary btn-block">CSE</a></h4>
+            <p class="card-text">
+              Department of Computer Science & Engineering<br>
+              <b>Reg-2017</b><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2017_fu/01.B.E.%20CSE%20final.pdf" target="_blank">Download PDF Now</a>
+            </p>
+            <p class="card-text">
+              <b>Reg-2021</b><br><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2021_fu/IandC/01.B.E.CSE.pdf" target="_blank">Download PDF Now</a>
+            </p>
+          </div>
+        </div>
+        <div class="card col-sm-2">
+          <div class="card card-block text-xs-center">
+            <h4 class="card-title"><a href="#" class="btn btn-primary btn-block">ECE</a></h4>
+            <p class="card-text">
+              Department of Electronics & Communication Engineering<br>
+              <b>Reg-2017</b><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2017_fu/03.%20B.E.%20ECE%20final.pdf" target="_blank">Download PDF Now</a>
+            </p>
+            <p class="card-text">
+              <b>Reg-2021</b><br><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2021_fu/IandC/06.B.E.ECE.pdf">Download PDF Now</a>
+            </p>
+          </div>
+        </div>
+        <div class="card col-sm-2">
+          <div class="card card-block text-xs-center">
+            <h4 class="card-title"><a href="#" class="btn btn-primary btn-block">MECHANICAL</a></h4>
+            <p class="card-text">
+              Department of Mechanical Engineering<br>
+              <b>Reg-2017</b><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2017_fu/3.%20B.E.%20Mech%20.pdf">Download PDF Now</a>
+            </p>
+            <p class="card-text">
+              <b>Reg-2021</b><br><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2021_fu/Mech/03.%20B.E.%20Mech..pdf" target="_blank">Download PDF Now</a>
+            </p>
+          </div>
+        </div>
+        <div class="card col-sm-2">
+          <div class="card card-block text-xs-center">
+            <h4 class="card-title"><a href="#" class="btn btn-primary btn-block">GEO INFORMATICS</a></h4>
+            <p class="card-text">
+              Department of Civil Engineering<br><br>
+              <b>Reg-2017</b><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2017_fu/03.B.E.Geo.pdf" target="_blank">Download PDF Now</a>
+            </p>
+            <p class="card-text">
+              <b>Reg-2021</b><br><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2021_fu/Civil/03.B.%20E.%20Geo.pdf" target="_blank">Download PDF Now</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="card col-sm-2">
+          <div class="card card-block text-xs-center">
+            <h4 class="card-title"><a href="#" class="btn btn-primary btn-block">CIVIL</a></h4>
+            <p class="card-text">
+              Department of Civil Engineering<br><br>
+              <b>Reg-2017</b><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2017_fu/01.B.E.Civil.pdf" target="_blank">Download PDF Now</a>
+            </p>
+            <p class="card-text">
+              <b>Reg-2021</b><br><br>
+              <a href="https://cac.annauniv.edu/aidetails/afug_2021_fu/Civil/01.B.%20E.%20Civil.pdf" target="_blank">Download PDF Now</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <br>
+  </center>
+
   <!--------------------FACULTY DETAILS------------------------------------->
 
   <center>
@@ -196,7 +281,7 @@ include("auth_session.php");
             <p class="card-text">
               <b>Dr.J.Thirumal</b><br>
               Assistant Professor & Head<br>
-              Department of Civil Engineering<br>
+              Department of Civil Engineering<br><br>
             <h5 class="text-uppercase text-blue"><b>Contact</b></h5><br>
             <a>thirumal.j.@auttvl.ac.in</a>
             </p>
@@ -219,35 +304,10 @@ include("auth_session.php");
       </div>
     </div>
     <br>
-=======
-  <br><br>
- 
-    <center>
-      <figure class="text-center">
-          <blockquote class="blockquote">
-            <marquee behavior="scroll" direction="left" scrollamound="50"><h3><p>The purpose of education is to make good human beings with skill and expertise... Enlightened human beings can be created by teachers.</p></h3></marquee>
-          </blockquote><h4>
-          <figcaption class="blockquote-footer">
-            <cite title="Source Title">A.P.J. Abdul Kalam</cite>
-          </figcaption></h4>
-        </figure>
-      <div class="form">
-        <?php
-        require('db.php');
-        $email = $_SESSION['username'];
-        $sql ="SELECT username from users where email='$email'";
-        $res = mysqli_query($con, $sql);
-        $rows = mysqli_fetch_array($res);
-        ?>
-        <h3>Welcome, <?php echo $rows['username']; ?> !</h3>
-      </div>
-    </center>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
 
   </center>
 </body>
 
-<<<<<<< HEAD
 <!--------------FOOTER STARTS--------------------------------------->
 
 <footer class="bg-dark text-white text-center text-lg-start">
@@ -317,8 +377,4 @@ include("auth_session.php");
   <!-- Copyright -->
 </footer>
 
-
-
-=======
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
 </html>

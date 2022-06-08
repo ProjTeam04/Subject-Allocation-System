@@ -14,6 +14,7 @@
             $department = stripslashes($_REQUEST['department']);
             $department = mysqli_real_escape_string($con, $department);
             $create_datetime = date("Y-m-d H:i:s");
+            if(!empty($username) && !empty($email) && !empty($password) && !empty($department)){
             $query    = "INSERT into `users` (username, department, password, email, create_datetime)
                      VALUES ('$username', '$department','" . md5($password) . "', '$email', '$create_datetime')";
             $result   = mysqli_query($con, $query);
@@ -26,18 +27,19 @@
                <?php
                header("Location: login.php");
             } else if ($duplicate) {
-               echo "<div class='form'>
-               <center>
-                  <h3>Duplicate Email-ID or department!</h3><br/>
-                  <p class='link'>Click here to <a href='register.php'>Register</a> again</p>
-               </center>
-                  </div>";
-            } else {
-               "<div class='form'>
-                  <h3>Required fields are missing.</h3><br/>
-                  <p class='link'>Click here to <a href='register.php'>registration</a> again.</p>
-                  </div>";
+               ?><script>
+                    alert("Duplicate Entry!!");
+                </script>
+               <?php
+               header("Location: login.php");
             }
+         }
+         else{
+            ?><script>
+                    alert("Enter all details!!");
+                </script>
+            <?php
+         }
          }
          } 
          ?>
@@ -62,8 +64,8 @@
    
    <div class="blur">
       <div class="center">
-         <h1>
-            <center>Register Here</center>
+         <h1 style="font-family: montserrat; color:white;">
+            <center><b>Register Here</b></center>
          </h1>
 
          
@@ -103,19 +105,8 @@
                   </div>
                </center>
             </form>
-<<<<<<< HEAD
-         <?php
-         }
-         ?>
-
-
-
-
-
-=======
       </div>
    </div>
 </body>
 
 </html>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116

@@ -5,13 +5,19 @@ $dbpassword = "";
 $dbname = "suball";
 
 //create connection
+include("auth_session.php");
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+$email = $_SESSION['username'];
+$query = "SELECT department from users where email = '$email'";
+$re = mysqli_query($conn, $query);
+$ro = mysqli_fetch_assoc($re);
+$udep = $ro['department'];
 
 if (isset($_POST['sendmail'])) {
     if (isset($_POST['subjects'])) {
         $subjects = $_POST['subjects'];
         foreach ($subjects as $key => $value) {
-            $query = "SELECT * from subjects Where coursecode = '$value'";
+            $query = "SELECT * from subjects Where coursecode = '$value' and department = '$udep'";
             $query1="SELECT * from academicyear order by sno desc limit 1";
             $qry_run = mysqli_query($conn, $query);
             $qry_run1 = mysqli_query($conn, $query1);
@@ -62,15 +68,9 @@ if (isset($_POST['sendmail'])) {
             <!---Home-->
             <ul class="navbar-nav me-auto order-0">
                 <li class="nav-item active">
-<<<<<<< HEAD
-                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-arrow-left" style="font-size:24px"></i>
-                        Back<span class="sr-only">(current)</span></a>
-
-                    <a class="nav-link" href="mailpage.php"> Back <span class="sr-only">(current)</span></a>
-=======
                     <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-arrow-left" style="font-size:24px"></i>
                         Back<span class="sr-only">(current)</span></a>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
+
                 </li>
 
             </ul>
@@ -104,22 +104,7 @@ if (isset($_POST['sendmail'])) {
                                 ?>
                             </select>
                         </div>
-                        <div class="col">
-                            <label>Department</label>
-                            <select class="form-control" name="dept" id="dep">
-                                <?php
-                                $sql = "SELECT distinct department from subjects";
-                                $res = mysqli_query($conn, $sql); ?>
-                                <option value="">select</option><?php
-                                                                while ($rows = mysqli_fetch_array($res)) {
-                                                                ?>
-                                    <option value="<?php echo $rows['department']; ?>"><?php echo $rows['department']; ?></option>
-                                <?php
-                                                                }
-                                ?>
-                            </select>
-                            <span></span>
-                        </div>
+            
                         <div class="col order-last">
                             <label>Semester</label>
                             <select class="form-control" name="semes" id="dep">
@@ -167,12 +152,28 @@ if (isset($_POST['sendmail'])) {
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * from subjects where category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                $sqry="SELECT * from academicyear order by sno desc limit 1";
+                $sem = mysqli_query($conn, $sqry);
+                $rows = mysqli_fetch_assoc($sem);
+                $yr = $rows['year'];
+                $semes = $rows['sem'];
+                //$rows1 = mysqli_fetch_assoc($res));
+                if($rows['sem'] == 'even'){
+                    $sql = "SELECT * from subjects where category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                }
+                else if($rows['sem'] == 'odd'){
+                    $sql = "SELECT * from subjects where category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                }
                 $result = mysqli_query($conn, $sql);
                 $number = 1;
                 if (isset($_GET['search'])) {
                     $filtervalues = $_GET['search'];
-                    $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') ";
+                    if($rows['sem'] == 'even'){
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                    }
+                    else if($rows['sem'] == 'odd'){
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                    }
                     $qry_run = mysqli_query($conn, $qry);
 
                     if (mysqli_num_rows($qry_run) > 0) {
@@ -204,29 +205,36 @@ if (isset($_POST['sendmail'])) {
                     }
                 } else if (isset($_POST['filtersubmit'])) {
                     $regulation = $_POST['regu'];
-                    $department = $_POST['dept'];
                     $semester = $_POST['semes'];
 
-                    if(!empty($regulation) && !empty($department) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                     if(!empty($regulation) && !empty($semester)){
+                    if($rows['sem'] == 'even'){
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                    }
+                    else if($rows['sem'] == 'odd'){
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                    }
+                
                 }
-                else if(!empty($regulation) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and department='$department' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($regulation) && !empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
-                else if(!empty($semester) && !empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department' and semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
+                
                 else if(!empty($regulation)){
-                    $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                    if($rows['sem'] == 'even'){
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                    }
+                    else if($rows['sem'] == 'odd'){
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                    }
+                    
                 }
-                else if(!empty($department)){
-                    $select = "SELECT * FROM subjects WHERE department='$department' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
-                }
+                
                 else if(!empty($semester)){
-                    $select = "SELECT * FROM subjects WHERE semester='$semester' and category in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5')";
+                    if($rows['sem'] == 'even'){
+                        $select = "SELECT * FROM subjects WHERE semester='$semester' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                    }
+                    else if($rows['sem'] == 'odd'){
+                        $select = "SELECT * FROM subjects WHERE semester='$semester' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                    }
+                    
                 }
                     $select1 = mysqli_query($conn, $select);
 

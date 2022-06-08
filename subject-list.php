@@ -6,8 +6,6 @@ $dbname = "suball";
 
 //create connection
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-<<<<<<< HEAD
-=======
 
 //include auth_session.php file on all user panel pages
 include("auth_session.php");
@@ -16,34 +14,6 @@ $sqlq ="SELECT department from users where email='$email'";
 $rest = mysqli_query($conn, $sqlq);
 $rowss = mysqli_fetch_array($rest);
 $udep = $rowss['department'];
-if (isset($_POST['suballot'])) {
-            $todep = $_POST['todepartment'];
-            $stat = 'sent';
-            $query = "SELECT * from subjects Where coursecode = '$cc' and department = '$dep'";
-            $query1="SELECT * from academicyear order by sno desc limit 1";
-            $qry_run = mysqli_query($conn, $query);
-            $qry_run1 = mysqli_query($conn, $query1);
-            $row = mysqli_fetch_assoc($qry_run);
-            $row1 = mysqli_fetch_assoc($qry_run1);
-            $yr = $row1['year'];
-            $sem = $row1['sem'];
-            $regulation = $row['regulation'];
-            $semester = $row['semester'];
-            $fromdepartment = $row['department'];
-            $todepartment = $todep;
-            $coursecode = $row['coursecode'];
-            $coursetitle = $row['coursetitle'];
-            $category = $row['category'];
-            $status = $stat;
-            $INSERT1 = "INSERT Into depwisepaper (acyear,sem,regulation,semester,fromdepartment,todepartment,coursecode,coursetitle,category,status) values(?,?,?,?,?,?,?,?,?,?)";
-            $stmt = $conn->prepare($INSERT1);
-            $stmt->bind_param("isiissssss",$yr, $sem, $regulation, $semester, $fromdepartment, $todepartment, $coursecode, $coursetitle, $category,$status);
-            $stmt->execute();
-            header("Location: subject-list.php");
-            $stmt->close();
-        }
-
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
 ?>
 <!DOCTYPE html>
 <html>
@@ -72,52 +42,12 @@ if (isset($_POST['suballot'])) {
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i>Home <span class="sr-only">(current)</span></a>
                 </li>
-<<<<<<< HEAD
-
-=======
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
                 <!-------Subject-entry--------------------------->
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="subject1.php">
+                    <a class="nav-link text-white" href="mailpage.php">
                         <i class="fa fa-pencil" style="font-size:24px" aria-hidden="true"></i>
-                        Subject-Entry <span class="sr-only">(current)</span></a>
+                        Subject-allocation <span class="sr-only">(current)</span></a>
                 </li>
-<<<<<<< HEAD
-
-               
-            </ul>
-
-            <li class="nav-item button">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Received subjects</button>
-                <!-- popup starts-->
-                <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title" style="margin: 0 auto"><b>Subject Lists</b></h1>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="card w-100" style="width: 18rem; margin: 0 auto">
-                                    <div class="card-body">
-                                        <table class="table table-bordered table-primary">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Select</th>
-                                                    <th scope="col">SI.No</th>
-                                                    <th scope="col">Regulation</th>
-                                                    <th scope="col">Semester</th>
-                                                    <th scope="col">Department</th>
-                                                    <th scope="col">Course Code</th>
-                                                    <th scope="col">Course Title</th>
-                                                    <th scope="col">Category</th>
-                                                    <th scope="col"> Assigned</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-=======
                 <!--Popup Form for subjects-->
 
                 <li class="nav-item button">
@@ -156,7 +86,7 @@ if (isset($_POST['suballot'])) {
                                                 $rows = mysqli_fetch_assoc($sem);
                                                 $yr = $rows['year'];
                                                 $semes = $rows['sem'];
-                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and fromdepartment = '$udep' ";
+                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and fromdepartment = '$udep' order by semester,regulation";
                                                 $res = mysqli_query($conn, $qy);
                                                 $number=1;
                                                 if ($res) {
@@ -186,16 +116,10 @@ if (isset($_POST['suballot'])) {
                                             </tbody>
                                         </table> 
                                                 
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
                                 </div>
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
-                </div>
-                <!-- popup ends-->
-            </li>
-=======
         </div>
         </div>
         <!-- popup ends-->
@@ -236,7 +160,7 @@ if (isset($_POST['suballot'])) {
                                                 $rows = mysqli_fetch_assoc($sem);
                                                 $yr = $rows['year'];
                                                 $semes = $rows['sem'];
-                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and todepartment = '$udep'";
+                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and todepartment = '$udep' order by semester,regulation";
                                                 $res = mysqli_query($conn, $qy);
                                                 $number=1;
                                                 if ($res) {
@@ -248,7 +172,8 @@ if (isset($_POST['suballot'])) {
                                                         $cc = $row['coursecode'];
                                                         $ct = $row['coursetitle'];
                                                         $cat = $row['category'];
-                                                        echo '<tr>
+                                                        $stat = $row['status'];
+                                                        echo '<form method="post"><tr>
                                                             <td>' . $number . '</td>
                                                             <td>' . $reg . '</td>
                                                             <td>' . $sem . '</td>
@@ -256,7 +181,9 @@ if (isset($_POST['suballot'])) {
                                                             <td>' . $cc . '</td>
                                                             <td>' . $ct . '</td>
                                                             <td>' . $cat . '</td>
-                                                            </tr>';
+                                                            <td><button class="btn btn-primary"><a href="sendsub.php?id='.$sno.'" class="text-light">'.$stat.'</a></button></td>
+                                                            </tr>
+                                                            </form>';
                                                             $number++;
                                                          }
                                                     }
@@ -272,7 +199,6 @@ if (isset($_POST['suballot'])) {
         </div>
         <!-- popup ends-->
         </li>
->>>>>>> d1ff8cf9d070b34f3c46ed895125b26248452116
             </ul>
         </div>
         <!--Search Bar-->
@@ -331,11 +257,16 @@ if (isset($_POST['suballot'])) {
                 </div>
         </center>
     </form>
+
+
     <!--Course Table Starts-->
     <br>
-    <form method="post">
+    <!-- <form method="post" action="subject-list.php"> -->
       <table class="table table-bordered table-primary">
         <thead>
+            <tr>
+                    <th colspan="9"><center><h3><b>Theory</b></h3></center></th>
+                </tr>
             <tr>
                 
                 <th scope="col">SI.No</th>
@@ -358,14 +289,17 @@ if (isset($_POST['suballot'])) {
                 $semes = $rows['sem'];
                 //$rows1 = mysqli_fetch_assoc($res));
                 if($rows['sem'] == 'even'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures != 0 and practicals = 0 order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures = 0 and practicals != 0 order by semester,regulation";
                 }
                 else if($rows['sem'] == 'odd'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
                 }
-                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep'";
+                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep' order by semester,regulation";
                 $res = mysqli_query($conn, $qy);
                 $result = mysqli_query($conn, $sql);
+                $result1 = mysqli_query($conn, $sql1);
                 $number = 1;
                 if (isset($_GET['search'])) {
                     $filtervalues = $_GET['search'];
@@ -376,15 +310,17 @@ if (isset($_POST['suballot'])) {
                     $semes = $rows['sem'];
                     
                     if($rows['sem'] == 'even'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
                     }
                     else if($rows['sem'] == 'odd'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
                     }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and department = '$udep'";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and department = '$udep' order by semester,regulation";
                     $qry_run = mysqli_query($conn, $qry);
+                    $qry_run1 = mysqli_query($conn, $qry1);
                     $res = mysqli_query($conn, $qy);
-                    if (mysqli_num_rows($qry_run) > 0) {
                         while ($row = mysqli_fetch_assoc($qry_run)) {
                             $sno = $row['sno'];
                             $reg = $row['regulation'];
@@ -393,25 +329,25 @@ if (isset($_POST['suballot'])) {
                             $cc = $row['coursecode'];
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
-                            echo '<tr>
+                            echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
+                            
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
-                            <td><select class="form-control" name="todepartment" id="dep" >
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
 
                             $number++;
                         }
@@ -423,36 +359,62 @@ if (isset($_POST['suballot'])) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        echo '<tr>
+                        echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
-                            <td><select class="form-control" name="todepartment" id="dep" >
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
                         $number++;
                     }
-                    } else {
-                ?>
-                        <tr>
-                            <td colspan="13">No record found</td>
-                        </tr>
-                    <?php
-                    }
-                } else if (isset($_POST['filtersubmit'])) {
+                    echo'<tr>
+                    <th scope="row" colspan="9"><h3><center><b>Laboratory</b></center></h3></th>
+                </tr>';
+                    while ($row = mysqli_fetch_assoc($qry_run1)){
+                            $sno = $row['sno'];
+                            $reg = $row['regulation'];
+                            $sem = $row['semester'];
+                            $dep = $row['department'];
+                            $cc = $row['coursecode'];
+                            $ct = $row['coursetitle'];
+                            $cat = $row['category'];
+                            echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
+                            
+                            <td>' . $number . '</td>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
+                            </select>
+                            </td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
+                            </tr></form>';
+
+                            $number++;
+                        }
+                    
+                    }else if (isset($_POST['filtersubmit'])) {
                     $regulation = $_POST['regu'];
                     $semester = $_POST['semes'];
                     $sqry="SELECT * from academicyear order by sno desc limit 1";
@@ -463,38 +425,35 @@ if (isset($_POST['suballot'])) {
     
                 
                  if(!empty($regulation) && !empty($semester)){
-                    if($rows['sem'] == 'even'){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'";
-                    }
-                    else if($rows['sem'] == 'odd'){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'";
-                    }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' and department = '$udep'";
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                        $select1 = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                    
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' order by semester,regulation";
                 }
                 
-                else if(!empty($regulation)){
-                    if($rows['sem'] == 'even'){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'";
-                    }
-                    else if($rows['sem'] == 'odd'){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'";
-                    }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation'";
-                }
-                else if(!empty($semester)){
-                    if($rows['sem'] == 'even'){
-                        $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'";
-                    }
-                    else if($rows['sem'] == 'odd'){
-                        $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'";
-                    }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and semester='$semester' and department = '$udep'";
-                }
+                // else if(!empty($regulation)){
+                //     if($rows['sem'] == 'even'){
+                //         $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                //     }
+                //     else if($rows['sem'] == 'odd'){
+                //         $select = "SELECT * FROM subjects WHERE regulation='$regulation' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                //     }
+                //     $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' order by semester,regulation";
+                // }
+                // else if(!empty($semester)){
+                //     if($rows['sem'] == 'even'){
+                //         $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                //     }
+                //     else if($rows['sem'] == 'odd'){
+                //         $select = "SELECT * FROM subjects WHERE semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                //     }
+                //     $qy="SELECT * from electives where year='$yr' and sem='$semes' and semester='$semester' and department = '$udep' order by semester,regulation";
+                // }
                     $res = mysqli_query($conn, $qy);
-                    $select1 = mysqli_query($conn, $select);
+                    $select = mysqli_query($conn, $select);
+                    $select1 = mysqli_query($conn, $select1);
 
-                    if (mysqli_num_rows($select1) > 0) {
-                        while ($row = mysqli_fetch_assoc($select1)) {
+                        while ($row = mysqli_fetch_assoc($select)) {
                             $sno = $row['sno'];
                             $reg = $row['regulation'];
                             $sem = $row['semester'];
@@ -502,25 +461,25 @@ if (isset($_POST['suballot'])) {
                             $cc = $row['coursecode'];
                             $ct = $row['coursetitle'];
                             $cat = $row['category'];
-                            echo '<tr>
+                            echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
+                            
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
-                            <td><select class="form-control" name="todepartment" id="dep" >
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
                             $number++;
                         }
                         while ($row = mysqli_fetch_assoc($res)) {
@@ -531,36 +490,60 @@ if (isset($_POST['suballot'])) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        echo '<tr>
+                        echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
                         $number++;
                     }
-                    } else {
-                    ?>
-                        <tr>
-                            <td colspan="13">No record found</td>
-                        </tr>
-                <?php
-                    }
-                } else if ($result) {
+                    echo'<tr>
+                    <th scope="row" colspan="9"><h3><center><b>Laboratory</b></center></h3></th>
+                </tr>';
+                    while ($row = mysqli_fetch_assoc($select1)) {
+                            $sno = $row['sno'];
+                            $reg = $row['regulation'];
+                            $sem = $row['semester'];
+                            $dep = $row['department'];
+                            $cc = $row['coursecode'];
+                            $ct = $row['coursetitle'];
+                            $cat = $row['category'];
+                            echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
+                            
+                            <td>' . $number . '</td>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
+                            </select>
+                            </td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
+                            </tr></form>';
+                            $number++;
+                        }
+                } else if ($result && $result1 && $res) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         $sno = $row['sno'];
                         $reg = $row['regulation'];
@@ -569,26 +552,25 @@ if (isset($_POST['suballot'])) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        echo '<tr>
+                        echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
                         $number++;
                     }
                     while ($row = mysqli_fetch_assoc($res)) {
@@ -599,32 +581,64 @@ if (isset($_POST['suballot'])) {
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
-                        echo '<tr>
+                        echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
-                            <td><select class="form-control" name="todepartment" id="dep" >
-                                    <option value="">select</option>
-                                    <option value="cse">Computer Science Engineering</option>
-                                    <option value="ece">Electronics & Communication Engineering</option>
-                                    <option value="mech">Mechanical Engineering</option>
-                                    <option value="geo">Geo Informatics Engineering</option>
-                                    <option value="science">Science and Humanities</option>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
                             </select>
                             </td>
                             <td>' . $cc . '</td>
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
-                            </tr>';
+                            </tr></form>';
+                        $number++;
+                    }
+
+                     echo'<tr>
+                    <th scope="row" colspan="9"><h3><center><b>Laboratory</b></center></h3></th>
+                </tr>';
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $sno = $row['sno'];
+                        $reg = $row['regulation'];
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        $cat = $row['category'];
+                        echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
+                            
+                            <td>' . $number . '</td>
+                            <td>' . $reg . '</td>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="Computer Science Engineering">Computer Science Engineering</option>
+                                    <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                                    <option value="Science and Humanities">Science and Humanities</option>
+                            </select>
+                            </td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td>' . $cat . '</td>
+                            <td><button class="btn btn-primary" type="submit" name="suballot">Send</button></td>
+                            </tr></form>';
                         $number++;
                     }
                 }
                 ?>
             </tbody>
         </table>
-    </form>
+    </<!-- form -->>
     <!--Course Table Ends-->
 </body>
 

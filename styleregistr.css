@@ -10,6 +10,8 @@ body {
 }
 
 .center {
+    font-family: Times;
+    color:  white;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -20,6 +22,8 @@ body {
 }
 
 .center h1 {
+    font-family: Times;
+    color:  white;
     text-align: center;
     padding: 20px 0;
     border-bottom: 1px solid silver;
