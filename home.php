@@ -12,10 +12,11 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
 
 
 $email = $_SESSION['username'];
-$sql = "SELECT username FROM users WHERE email='$email'";
+$sql = "SELECT username,department FROM users WHERE email='$email'";
 $res = mysqli_query($conn,$sql);
 $row = mysqli_fetch_assoc($res);
 $name = $row['username'];
+$udep = $row['department'];
 ?>
 <!-----AUTH SESSION ENDS-------------->
 
@@ -53,12 +54,11 @@ $name = $row['username'];
         </li>
 
         <li class="nav-item active">
-          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Subject-Allocation<span class="sr-only">(current)</span></a>
+          <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-hand-pointer-o" style="font-size:30px"></i>  Subject-Allocation <span class="sr-only">(current)</span></a>
         </li>
 
         <li class="nav-item active">
-          <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:29px"></i>
-            Send/Receive <span class="sr-only">(current)</span></a>
+          <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:29px"></i> Send/Receive <span class="sr-only">(current)</span></a>
         </li>
 
         <li class="nav-item active">
@@ -72,7 +72,22 @@ $name = $row['username'];
       <li class="nav-item active">
           <i class="fa fa-user" style="font-size:29px"></i>&nbsp;
           <?php
-            echo $name;
+            echo $name.' - ';
+            if($udep == "Computer Science Engineering"){
+              echo 'CSE';
+            }
+            else if($udep == "Electronics & Communication Engineering"){
+              echo 'ECE';
+            }
+            else if($udep == "Mechanical Engineering"){
+              echo 'MECH';
+            }
+            else if($udep == "Geo Informatics Engineering"){
+              echo 'GEO';
+            }
+            else if($udep == "Science and Humanities"){
+              echo 'Sci. & Humanities';
+            }
            ?>&ensp;
           </li>
 

@@ -42,8 +42,8 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="listgeneration.php"><i class="fa fa-list" style="font-size:24px"></i><span class="sr-only">(current)</span>
-                        Subject-List</a>
+                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Send/Receive</a>
                 </li>
                 
                 <li class="nav-item active">
@@ -75,7 +75,7 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" name="search" value="<?php if (isset($_GET['search'])) {
                                                                                         echo $_GET['search'];
-                                                                                    } ?>" placeholder="Search">
+                                                                                    } ?>" placeholder="Code/Title/Category">
             <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
         </form>
     </nav>
@@ -218,14 +218,14 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
                     $semes = $rows['sem'];
                     
                     if($rows['sem'] == 'even'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
                     }
                     else if($rows['sem'] == 'odd'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
                     }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and department = '$udep' order by semester,regulation";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and department = '$udep' order by semester,regulation";
                     $qry_run = mysqli_query($conn, $qry);
                     $qry_run1 = mysqli_query($conn, $qry1);
                     $res = mysqli_query($conn, $qy);

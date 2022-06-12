@@ -33,13 +33,15 @@
             header('location:subject-list.php');
 
         }
-        if(isset($_GET['id'])){
-            $sno = $_GET['id'];
+        if(isset($_POST['sendsub'])){
+        $subjects = $_POST['subjects'];
+        foreach ($subjects as $key => $value) {
+            $sno = $value;
             $stat = 'Accepted';
             $qe = "UPDATE depwisepaper SET status = '$stat' WHERE sno='$sno'";
             $re = mysqli_query($conn, $qe);
-            if($re){
-                header('Location:subject-list.php');
-            }
+        }
+
+        header('Location:subject-list.php');
 }
     ?>

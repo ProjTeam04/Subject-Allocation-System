@@ -20,7 +20,7 @@
 			$result=mysqli_query($conn,$sql);
 			if($result){
 				?><script> alert("Do you want to delete the record?"); </script><?php
-				header('location:subject1.php');
+				header('location : displaysubject.php');
 			}    		
 			else{
 				die(mysqli_error($conn));

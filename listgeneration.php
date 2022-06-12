@@ -8,6 +8,16 @@ $dbname = "suball";
 
 //create connection
 $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+$email = $_SESSION['username'];
+$sqlq ="SELECT department from users where email='$email'";
+$rest = mysqli_query($conn, $sqlq);
+$rowss = mysqli_fetch_assoc($rest);
+$udep = $rowss['department'];
+$sqry="SELECT * from academicyear order by sno desc limit 1";
+$se = mysqli_query($conn, $sqry);
+$rows = mysqli_fetch_assoc($se);
+$yr = $rows['year'];
+$se = $rows['sem'];
 ?>
 <!-----AUTH SESSION ENDS-------------->
 
@@ -21,10 +31,9 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
   <title>Subject-List</title>
   <link rel="icon" href="annaunivlogo.webp">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" media="print">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -35,96 +44,168 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+    <div>
+    <center>
+        <h2><b>Anna University Regional Campus - Tirunelveli</b></h2>
+        <h3><b>Department of <?php echo $udep;?></b></h3>
+        <h3><b>Academic Year - <?php echo $yr;?></b></h3><br>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!---Home-->
-             <ul class="navbar-nav me-auto order-0">
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i><span class="sr-only">(current)</span>
-                        Home</a>
-                </li>
-
-                <li class="nav-item active">
-
-
-                    <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:24px"></i><span class="sr-only">(current)</span>
-                        Subject-Allocation</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!--- semester backend-->
-        <center>
-            <div class="card w-25" style="width: 18rem; margin: 0 auto">
-            <div class="card-body">
-            <h3><b>Academic Year</b></h3>
-            <?php  
-                 $yr="SELECT * from academicyear order by sno desc limit 1";
-                 $qry_run = mysqli_query($conn, $yr);
-                 $row = mysqli_fetch_assoc($qry_run);
-                 echo '<h3><b>'.$row['year'].' - '.$row['sem'].' semester</b></h3>';
-    ?>
-    </div>
-  </div>
-    <br>
-    <!--- semester selection end-->
-        <h2><b><u>Subject List</u></b></h2>
-        <table class="table table-bordered table-primary">
-          <thead>
+    </center>
+    <table class="table table-bordered table-light">
+        <thead>
             <tr>
-              <th scope="col">SI.No</th>
-              <th scope="col">Semester</th>
-              <th scope="col">Department</th>
-              <th scope="col">Actions</th>
+                <th colspan="6"><center>Theory</center></th>
             </tr>
-          </thead>
-          <tbody>
+            <tr>
+                <th scope="col">SI.No</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Department</th>
+                <th scope="col">Course Code</th>
+                <th scope="col">Course Title</th>
+                <th scope="col" width="20%">Staff Name</th>
+            </tr>
+        </thead>
+        <tbody>
             <?php
-            $sqry="SELECT * from academicyear order by sno desc limit 1";
-                $sem = mysqli_query($conn, $sqry);
-                $rows = mysqli_fetch_assoc($sem);
-                $yr = $rows['year'];
-                $semes = $rows['sem'];
-                //$rows1 = mysqli_fetch_assoc($res));
-                $email = $_SESSION['username'];
-                $sqlq ="SELECT department from users where email='$email'";
-                $rest = mysqli_query($conn, $sqlq);
-                $rowss = mysqli_fetch_array($rest);
-                $udep = $rowss['department'];
-                $number = 1;
+            if($se == 'odd'){
+                $lf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures != 0 and practicals = 0) order by semester,regulation";
+                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7)) and lectures != 0 and practicals = 0 order by semester,regulation";
+                $pf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures = 0 and practicals != 0) order by semester,regulation";
+                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7)) and lectures = 0 and practicals != 0 order by semester,regulation";
+                $f3 = "SELECT * from electives where year = '$yr' and sem = '$se' and department ='$udep' order by semester,regulation";
+            }
+            else if($se == 'even'){
+                $lf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures != 0 and practicals = 0) order by semester,regulation";
+                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8)) and lectures != 0 and practicals = 0 order by semester,regulation";
+                $pf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures = 0 and practicals != 0) order by semester,regulation";
+                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8)) and lectures = 0 and practicals != 0 order by semester,regulation";
+                $f3 = "SELECT * from electives where year = '$yr' and sem = '$se' and department ='$udep' order by semester,regulation";
+            }
 
-                if($rows['sem'] == 'even'){
-                  $semr = 2;
-                  while($number <= 4){
-                    echo'<tr>
-                    <td>'.$number.'</td>
-                    <td>'.$semr.'</td>
-                    <td>'.$udep.'</td>
-                    <td><button type="button" class="btn btn-danger"><a href="viewsubject.php?sem='.$semr.'" class="text-light">View</a></button></td>
-                    </tr>';
-                    $number++;
-                    $semr = $semr + 2;
-                  }
+                $lres1 = mysqli_query($conn, $lf1);
+                $lres2 = mysqli_query($conn, $lf2);
+                $pres1 = mysqli_query($conn, $pf1);
+                $pres2 = mysqli_query($conn, $pf2);
+                $eres = mysqli_query($conn, $f3);
+                $number = 1;
+                if($lres1 && $lres2 && $eres){
+                
+                while ($row = mysqli_fetch_array($lres2)) {
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td></td>
+                            
+                            </tr>';
+                        $number++;
                 }
-                else if($rows['sem'] == 'odd'){
-                     $semr = 1;
-                  while($number <= 4){
-                    echo'<tr>
-                    <td>'.$number.'</td>
-                    <td>'.$semr.'</td>
-                    <td>'.$udep.'</td>
-                    <td><button type="button" class="btn btn-danger"><a href="viewsubject.php?sem='.$semr.'" class="text-light">View</a></button></td>
-                    </tr>';
-                    $number++;
-                    $semr = $semr + 2;
-                  }
+                while ($row = mysqli_fetch_array($eres)) {
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td></td>
+                            
+                            </tr>';
+                        $number++;
                 }
-              ?>
-          </tbody>
-        </table>
-      </center>
-                        
+                while ($row = mysqli_fetch_array($lres1)) {
+                        $sem = $row['semester'];
+                        $dep = $row['fromdepartment'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td></td>
+                            
+                            </tr>';
+                        $number++;
+                }
+                $theory = $number - 1;
+            }?>
+            <tr>
+                <th colspan="6"><center>Laboratory</center></th>
+            </tr><?php
+            if($pres1 && $pres2){
+                
+                while ($row = mysqli_fetch_array($pres2)) {
+                        $sem = $row['semester'];
+                        $dep = $row['department'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td></td>
+                            
+                            </tr>';
+                        $number++;
+                }
+            }
+            while ($row = mysqli_fetch_array($pres1)) {
+                        $sem = $row['semester'];
+                        $dep = $row['fromdepartment'];
+                        $cc = $row['coursecode'];
+                        $ct = $row['coursetitle'];
+                        echo '<tr>
+                            <th scope="row">' . $number . '</th>
+                            <td>' . $sem . '</td>
+                            <td>' . $dep . '</td>
+                            <td>' . $cc . '</td>
+                            <td>' . $ct . '</td>
+                            <td></td>
+                            
+                            </tr>';
+                        $number++;
+                }
+            $totalpaper = $number - 1;
+            ?>
+        </tbody>
+    </table>
+    <div class="text-center">
+        <button onclick="window.print();" class="btn btn-primary btn-lg" id="print-btn">Print</button>
+    </div> 
+    </div>
+    <h1>  </h1> 
+    <?php
+        $totalstaff = 0;
+        $lab = $totalpaper - $theory;
+        $minstaff = $lab;
+        $extrastaff = 0;
+        $theorycovered = $minstaff * 2;
+        $balancetheory = $theory - $theorycovered;
+        if($balancetheory < 0){
+            $totalstaff = $minstaff;
+        }
+        else if($balancetheory % 3 == 0){
+            $extrastaff = $balancetheory / 3;
+        }
+        else{
+            $extrastaff = ($balancetheory / 3) + 1;
+        }
+        $totalstaff = $minstaff + $extrastaff;
+        
+    ?>                      
 </body>
 </html>
 

@@ -44,9 +44,9 @@ $udep = $rowss['department'];
                 </li>
                 <!-------Subject-entry--------------------------->
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="mailpage.php">
-                        <i class="fa fa-pencil" style="font-size:24px" aria-hidden="true"></i>
-                        Subject-allocation <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="listgeneration.php">
+                        <i class="fa fa-list" style="font-size:24px" aria-hidden="true"></i>
+                        Subject-List <span class="sr-only">(current)</span></a>
                 </li>
                 <!--Popup Form for subjects-->
 
@@ -139,9 +139,11 @@ $udep = $rowss['department'];
                                 <div class="modal-body">
                                     <div class="card w-100" style="width: 18rem; margin: 0 auto">
                                         <div class="card-body">
+                                        <form action="sendsub.php" method="post">
                                            <table class="table table-bordered table-primary">
                                             <thead>
                                                 <tr>
+                                                    <th scope="col">Select</th>
                                                     <th scope="col">SI.No</th>
                                                     <th scope="col">Regulation</th>
                                                     <th scope="col">Semester</th>
@@ -149,7 +151,6 @@ $udep = $rowss['department'];
                                                     <th scope="col">Course Code</th>
                                                     <th scope="col">Course Title</th>
                                                     <th scope="col">Category</th>
-                                                    <th scope="col"> Assigned</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -173,7 +174,9 @@ $udep = $rowss['department'];
                                                         $ct = $row['coursetitle'];
                                                         $cat = $row['category'];
                                                         $stat = $row['status'];
-                                                        echo '<form method="post"><tr>
+                                                        if($stat == 'sent'){
+                                                        echo '<tr>
+                                                            <td><input type="checkbox" class="form-check-input" value="' . $sno . '" name="subjects[]"></td>
                                                             <td>' . $number . '</td>
                                                             <td>' . $reg . '</td>
                                                             <td>' . $sem . '</td>
@@ -181,16 +184,20 @@ $udep = $rowss['department'];
                                                             <td>' . $cc . '</td>
                                                             <td>' . $ct . '</td>
                                                             <td>' . $cat . '</td>
-                                                            <td><button class="btn btn-primary"><a href="sendsub.php?id='.$sno.'" class="text-light">'.$stat.'</a></button></td>
-                                                            </tr>
-                                                            </form>';
+                                                            </tr>';
                                                             $number++;
+                                                            }
                                                          }
                                                     }
                                                 ?>
                                             </tbody>
+                                    
                                         </table> 
-                                                
+                                        <center>
+                                            <button type="submit" class="btn btn-primary btn-lg" name="sendsub">Accept</button>
+                                            <input class="btn btn-danger btn-lg" type="reset" value="Cancel">
+                                        </center><br>  
+                                    </form>       
                                 </div>
                             </div>
                         </div>
@@ -201,11 +208,13 @@ $udep = $rowss['department'];
         </li>
             </ul>
         </div>
+        <!-- Staff required display-->
+        
         <!--Search Bar-->
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" name="search" value="<?php if (isset($_GET['search'])) {
                                                                                         echo $_GET['search'];
-                                                                                    } ?>" placeholder="Search">
+                                                                                    } ?>" placeholder="Code/Title/Category">
             <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
         </form>
     </nav>
@@ -235,14 +244,24 @@ $udep = $rowss['department'];
                             <label>Semester</label>
                             <select class="form-control" name="semes" id="dep">
                                 <?php
+                                $sqry="SELECT * from academicyear order by sno desc limit 1";
+                                $sem = mysqli_query($conn, $sqry);
+                                $rowss = mysqli_fetch_assoc($sem);
                                 $sql = "SELECT distinct semester from subjects";
                                 $res = mysqli_query($conn, $sql); ?>
                                 <option value="">select</option><?php
                                                                 while ($rows = mysqli_fetch_array($res)) {
+                                                                    if($rowss['sem'] == 'even' && $rows['semester']%2 == 0){
                                                                 ?>
                                     <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
                                 <?php
-                                                                }
+                                    }
+                                    else if($rowss['sem'] == 'odd' && $rows['semester']%2 != 0){
+                                                                ?>
+                                    <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
+                                <?php
+                                    }
+                               }
                                 ?>
                             </select>
                             <span></span>
@@ -289,14 +308,14 @@ $udep = $rowss['department'];
                 $semes = $rows['sem'];
                 //$rows1 = mysqli_fetch_assoc($res));
                 if($rows['sem'] == 'even'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures != 0 and practicals = 0 order by semester,regulation";
-                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures = 0 and practicals != 0 order by semester,regulation";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                 }
                 else if($rows['sem'] == 'odd'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                 }
-                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep' order by semester,regulation";
+                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                 $res = mysqli_query($conn, $qy);
                 $result = mysqli_query($conn, $sql);
                 $result1 = mysqli_query($conn, $sql1);
@@ -310,18 +329,18 @@ $udep = $rowss['department'];
                     $semes = $rows['sem'];
                     
                     if($rows['sem'] == 'even'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                     }
                     else if($rows['sem'] == 'odd'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                     }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and department = '$udep' order by semester,regulation";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                     $qry_run = mysqli_query($conn, $qry);
                     $qry_run1 = mysqli_query($conn, $qry1);
                     $res = mysqli_query($conn, $qy);
-                        while ($row = mysqli_fetch_assoc($qry_run)) {
+                    while ($row = mysqli_fetch_assoc($qry_run)) {
                             $sno = $row['sno'];
                             $reg = $row['regulation'];
                             $sem = $row['semester'];
@@ -336,6 +355,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -352,13 +372,16 @@ $udep = $rowss['department'];
                             $number++;
                         }
                         while ($row = mysqli_fetch_assoc($res)) {
-                        $sno = $row['sno'];
                         $reg = $row['regulation'];
                         $sem = $row['semester'];
                         $dep = $row['department'];
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
+                        $new = "SELECT sno from subjects where coursecode = '$cc' and department ='$dep'";
+                        $newres = mysqli_query($conn, $new);
+                        $rownew = mysqli_fetch_assoc($newres);
+                        $sno = $rownew['sno'];
                         echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             
                             <td>' . $number . '</td>
@@ -366,6 +389,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -398,6 +422,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -425,10 +450,10 @@ $udep = $rowss['department'];
     
                 
                  if(!empty($regulation) && !empty($semester)){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures != 0 and practicals = 0 order by semester,regulation";
-                        $select1 = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures = 0 and practicals != 0 order by semester,regulation";
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $select1 = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                     
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' order by semester,regulation";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
                 }
                 
                 // else if(!empty($regulation)){
@@ -468,6 +493,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -483,13 +509,16 @@ $udep = $rowss['department'];
                             $number++;
                         }
                         while ($row = mysqli_fetch_assoc($res)) {
-                        $sno = $row['sno'];
                         $reg = $row['regulation'];
                         $sem = $row['semester'];
                         $dep = $row['department'];
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
+                        $new = "SELECT sno from subjects where coursecode = '$cc' and department ='$dep'";
+                        $newres = mysqli_query($conn, $new);
+                        $rownew = mysqli_fetch_assoc($newres);
+                        $sno = $rownew['sno'];
                         echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             
                             <td>' . $number . '</td>
@@ -497,6 +526,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -529,6 +559,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -543,7 +574,8 @@ $udep = $rowss['department'];
                             </tr></form>';
                             $number++;
                         }
-                } else if ($result && $result1 && $res) {
+                } 
+                else if($result && $res && $result1){
                     while ($row = mysqli_fetch_assoc($result)) {
                         $sno = $row['sno'];
                         $reg = $row['regulation'];
@@ -559,6 +591,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -574,19 +607,24 @@ $udep = $rowss['department'];
                         $number++;
                     }
                     while ($row = mysqli_fetch_assoc($res)) {
-                        $sno = $row['sno'];
                         $reg = $row['regulation'];
                         $sem = $row['semester'];
                         $dep = $row['department'];
                         $cc = $row['coursecode'];
                         $ct = $row['coursetitle'];
                         $cat = $row['category'];
+                        $new = "SELECT sno from subjects where coursecode = '$cc' and department ='$dep'";
+                        $newres = mysqli_query($conn, $new);
+                        $rownew = mysqli_fetch_assoc($newres);
+                        $sno = $rownew['sno'];
+
                         echo '<form method="POST" action="sendsub.php?subid='.$sno.'"><tr>
                             <td>' . $number . '</td>
                             <td>' . $reg . '</td>
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -605,7 +643,7 @@ $udep = $rowss['department'];
                      echo'<tr>
                     <th scope="row" colspan="9"><h3><center><b>Laboratory</b></center></h3></th>
                 </tr>';
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result1)) {
                         $sno = $row['sno'];
                         $reg = $row['regulation'];
                         $sem = $row['semester'];
@@ -620,6 +658,7 @@ $udep = $rowss['department'];
                             <td>' . $sem . '</td>
                             <td>' . $dep . '</td>
                             <td><select class="form-control" name="todepartment" id="dep">
+                                    <option value="">Select</option>
                                     <option value="Computer Science Engineering">Computer Science Engineering</option>
                                     <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>

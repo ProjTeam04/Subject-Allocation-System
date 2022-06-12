@@ -95,13 +95,15 @@
                                     <option id="dep" name="ece">Electronics & Communication Engineering</option>
                                     <option id="dep" name="mech">Mechanical Engineering</option>
                                     <option id="dep" name="geo">Geo Informatics Engineering</option>
+                                    <option id="dep" name="science">Science and Humanities</option>
+
                             </select>
                      <span></span>
                   </div><br>
                   <input type="submit" name="submit" value="Register">
                   <div class="signup_link">
                      Already have an account?
-                     <a href="login.php">Signin</a>
+                     <a href="login.php">Sign in</a>
                   </div>
                </center>
             </form>

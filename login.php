@@ -53,12 +53,15 @@
                    <input type="password" name="password" required="">
                    <label>Password</label>
                 </div>
-                <div class="pass">Forgot Password?</div>
                 <input type="submit" name="submit" value="Login">
+
                 <div class="signup_link">
                    Don't have an account?
-                   <a href="register.php">Signup</a>
+                   <a href="register.php">Signup</a><br><br>
+                   Are you a admin?
+                   <a href="adminlogin.php">Login here</a>
                 </div>
+                
              </center>
           </form>
     </div>

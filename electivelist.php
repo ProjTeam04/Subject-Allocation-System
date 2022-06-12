@@ -79,7 +79,7 @@ if (isset($_POST['sendmail'])) {
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" name="search" value="<?php if (isset($_GET['search'])) {
                                                                                         echo $_GET['search'];
-                                                                                    } ?>" placeholder="Search">
+                                                                                    } ?>" placeholder="Code/Title/Category">
             <button class="btn btn-outline-success my-2 my-sm-0 btn-dark" type="submit">Search</button>
         </form>
     </nav>
@@ -110,12 +110,23 @@ if (isset($_POST['sendmail'])) {
                             <select class="form-control" name="semes" id="dep">
                                 <?php
                                 $sql = "SELECT distinct semester from subjects";
-                                $res = mysqli_query($conn, $sql); ?>
+                                $res = mysqli_query($conn, $sql);
+                                $sqry="SELECT * from academicyear order by sno desc limit 1";
+                                $sem = mysqli_query($conn, $sqry);
+                                $rowss = mysqli_fetch_assoc($sem);
+                                ?>
                                 <option value="">select</option><?php
                                 while ($rows = mysqli_fetch_array($res)) {
-                                ?>
+                                    if($rowss['sem'] == 'even' && $rows['semester']%2 == 0){
+                                                                ?>
                                     <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
                                 <?php
+                                    }
+                                    else if($rowss['sem'] == 'odd' && $rows['semester']%2 != 0){
+                                                                ?>
+                                    <option value="<?php echo $rows['semester']; ?>"><?php echo $rows['semester']; ?></option>
+                                <?php
+                                    }
                                 }
                                 ?>
                             </select>
@@ -169,10 +180,10 @@ if (isset($_POST['sendmail'])) {
                 if (isset($_GET['search'])) {
                     $filtervalues = $_GET['search'];
                     if($rows['sem'] == 'even'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' order by semester,regulation";
                     }
                     else if($rows['sem'] == 'odd'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category  in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep' order by semester,regulation";
                     }
                     $qry_run = mysqli_query($conn, $qry);
 
@@ -195,6 +206,7 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
+                            $number++;
                         }
                     } else {
                 ?>
@@ -257,6 +269,7 @@ if (isset($_POST['sendmail'])) {
                             <td>' . $ct . '</td>
                             <td>' . $cat . '</td>
                             </tr>';
+                            $number++;
                         }
                     } else {
                     ?>
