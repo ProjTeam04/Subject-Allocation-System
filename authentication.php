@@ -20,7 +20,7 @@ if($count == 1){
     header("Location: dashboard.php");
 }
 else{
+    
     header("Location: adminlogin.php");
-    echo "<h1> Login failed. Invalid username or password.</h1>";
 }
 ?>

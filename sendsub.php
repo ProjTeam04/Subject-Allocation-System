@@ -40,8 +40,18 @@
             $stat = 'Accepted';
             $qe = "UPDATE depwisepaper SET status = '$stat' WHERE sno='$sno'";
             $re = mysqli_query($conn, $qe);
+            header('Location:subject-list.php');
         }
-
-        header('Location:subject-list.php');
+    }
+        if(isset($_POST['denysub'])){
+        $subjects = $_POST['subjects'];
+        foreach ($subjects as $key => $value) {
+            $sno = $value;
+            $stat = 'Denied';
+            $qe = "UPDATE depwisepaper SET status = '$stat' WHERE sno='$sno'";
+            $re = mysqli_query($conn, $qe);
+            header('Location:subject-list.php');
+        }
+        
 }
     ?>

@@ -1,7 +1,26 @@
 <!-----AUTH SESSION STARTS-------------->
 <?php
 //include auth_session.php file on all user panel pages
+$host = "localhost";
+$dbusername = "root";
+$dbpassword = "";
+$dbname = "suball";
+
+//create connection
 include("auth_session.php");
+$conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+
+if (isset($_POST['setyear'])){
+                    $year = $_POST['year'];
+                    $toyear = $_POST['toyear'];
+                    $sem = $_POST['sem'];
+                    $INSERT1 = "INSERT Into academicyear (year,toyear,sem) values(?,?,?)";
+                    $stmt = $conn->prepare($INSERT1);
+                    $stmt->bind_param("iis", $year,$toyear,$sem);
+                    $stmt->execute();
+                    header("Location: dashboard.php");
+                    $stmt->close();
+                 }
 ?>
 <!-----AUTH SESSION ENDS-------------->
 
@@ -33,14 +52,12 @@ include("auth_session.php");
             <ul class="navbar-nav me-auto order-0">
 
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-list" style="font-size:24px"></i>
-                        Subject-List <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="dashboard.php"><i class="fa fa-home" style="font-size:29px"></i><span class="sr-only">(current)</span> Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="mailpage.php"><i class="fa fa-pencil" style="font-size:30px"></i>Elective-Allocation<span class="sr-only">(current)</span></a>
-                </li>
+                
             </ul>
         </div>
+
         <?php
         if (isset($_SESSION['username'])) {
             echo ' <li class="nav-item btn btn-secondary active">
@@ -58,12 +75,94 @@ include("auth_session.php");
     <!--Nav Ends---->
     <!-----------------NAV BAR ENDS---------------------->
     <!----------------TITLE TAG STARTS-------------------------->
-    <center>
-        <h1 style="color: #00008B; font-family: serif">Welcome! Admin</b></h1>
-    </center>
+    
     <center><img class="logo" src="annaunivlogo.webp" alt="logo" width="200" height="160"></center>
     <br>
+    <center>
+        <h1 style="color: black ;">Welcome Admin !!</b></h1>
+    </center>
+
     <!----------------TITLE TAG ENDS-------------------------->
+    <br>
+    <center >
+            <?php  
+                 $yr="SELECT * from academicyear order by sno desc limit 1";
+                 $qry_run = mysqli_query($conn, $yr);
+                 $row = mysqli_fetch_assoc($qry_run);
+                 echo '<h3><b>Academic year : '.$row['year'].' - '.$row['toyear'].' '.$row['sem'].' semester</b></h3>';
+            ?>
+        </center>
+        <br><br>
+    <div class="card w-25" style="width: 18rem; margin: 0 auto">
+            <div class="card-body">
+                <center>
+                    <h3>Set Current Academic year</h3>   
+                    <!--Popup Form for subjects-->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Set</button>
+                    <h3>View List Generated</h3>
+                    <form action="Adminlist.php">
+                        <button class="btn btn-primary">View</button>
+                    </form>
+                </center>
+            </div>
+        </div><br><br>
+<!-- popup starts-->
+                    <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title" style="margin: 0 auto"><b>Current Academic Year details</b></h1>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card w-100" style="width: 18rem; margin: 0 auto">
+                                        <div class="card-body">
+                                            <form method="post">
+                                                <div class="col" width="50%">
+                                                        <div class="form-group">
+                                                            <label>From year</label>
+                                                            <input class="form-control mr-sm-2" type="text" name="year" value="" placeholder="Academic year" required="">
+                                                            <span></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>To year</label>
+                                                            <input class="form-control mr-sm-2" type="text" name="toyear" value="" placeholder="Academic year" required="">
+                                                            <span></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Semester</label>
+                                                            <select class="form-control" name="sem" required="">
+                                
+                                                                <option value="">Select semester</option>
+                                                                <option value="odd">Odd</option>
+                                                                <option value="even">Even</option>
+                                                            </select>
+                                                            
+                                                            <span></span>
+                                                        </div>
+                    
+                                                </div>
+                                                <br>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="setyear">Set</button>
+                                                    <!--<input class="btn btn-primary" type="submit" value="Submit">-->
+                                                    <input class="btn btn-danger" type="reset" value="Clear">
+                                                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        </div>
+        <!-- popup ends-->
+
 </body>
 
 </html>
+

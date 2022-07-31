@@ -74,7 +74,6 @@
         </thead>
         <tbody>
         	<?php
-        		if(isset($_GET['sem'])){
                 $lf1 = "SELECT semester, todepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and sem = '$se' and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures != 0 and practicals = 0)";
                 $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and sem = '$se') and lectures != 0 and practicals = 0";
                 $pf1 = "SELECT semester, todepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and sem = '$se' and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures = 0 and practicals != 0)";
@@ -173,7 +172,7 @@
                         $number++;
                 }
             }
-    	}
+    	
         	?>
         </tbody>
     </table>

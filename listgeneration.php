@@ -69,16 +69,16 @@ $se = $rows['sem'];
             <?php
             if($se == 'odd'){
                 $lf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures != 0 and practicals = 0) order by semester,regulation";
-                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7)) and lectures != 0 and practicals = 0 order by semester,regulation";
+                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted') and lectures != 0 and practicals = 0 order by semester,regulation";
                 $pf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures = 0 and practicals != 0) order by semester,regulation";
-                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7)) and lectures = 0 and practicals != 0 order by semester,regulation";
+                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (1,3,5,7) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (1,3,5,7) and status = 'Accepted') and lectures = 0 and practicals != 0 order by semester,regulation";
                 $f3 = "SELECT * from electives where year = '$yr' and sem = '$se' and department ='$udep' order by semester,regulation";
             }
             else if($se == 'even'){
                 $lf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures != 0 and practicals = 0) order by semester,regulation";
-                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8)) and lectures != 0 and practicals = 0 order by semester,regulation";
+                $lf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted') and lectures != 0 and practicals = 0 order by semester,regulation";
                 $pf1 = "SELECT semester, fromdepartment, coursecode, coursetitle from depwisepaper where todepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted' and coursecode in (SELECT coursecode from subjects where department = '$udep' and lectures = 0 and practicals != 0) order by semester,regulation";
-                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8)) and lectures = 0 and practicals != 0 order by semester,regulation";
+                $pf2 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department= '$udep' and semester in (2,4,6,8) and coursecode not in (SELECT coursecode from depwisepaper where fromdepartment = '$udep' and acyear = '$yr' and semester in (2,4,6,8) and status = 'Accepted') and lectures = 0 and practicals != 0 order by semester,regulation";
                 $f3 = "SELECT * from electives where year = '$yr' and sem = '$se' and department ='$udep' order by semester,regulation";
             }
 
@@ -178,16 +178,7 @@ $se = $rows['sem'];
                             </tr>';
                         $number++;
                 }
-            $totalpaper = $number - 1;
-            ?>
-        </tbody>
-    </table>
-    <div class="text-center">
-        <button onclick="window.print();" class="btn btn-primary btn-lg" id="print-btn">Print</button>
-    </div> 
-    </div>
-    <h1>  </h1> 
-    <?php
+        $totalpaper = $number - 1;
         $totalstaff = 0;
         $lab = $totalpaper - $theory;
         $minstaff = $lab;
@@ -203,9 +194,69 @@ $se = $rows['sem'];
         else{
             $extrastaff = ($balancetheory / 3) + 1;
         }
-        $totalstaff = $minstaff + $extrastaff;
+        $totalstaff = (int)($minstaff + $extrastaff);
         
-    ?>                      
+    ?>  
+    </tbody>
+    </table>
+
+    <div class="text-center">
+        <form method="post">
+        <button onclick="window.print();" class="btn btn-primary btn-lg" id="print-btn">Print</button>
+        <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">STAFF REQ.</button>
+
+        </form>
+    </div> 
+    </div>
+    <!-- popup starts-->
+                    <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title" style="margin: 0 auto"><b>Staff Requirement Details</b></h1>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card w-100" style="width: 18rem; margin: 0 auto">
+                                        <div class="card-body">
+                                            <form method="post">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Total no of subjects</label>
+                                                            <input class="form-control" type="number" placeholder="<?php echo $totalpaper;?>" disabled>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total no of Laboratory subjects</label>
+                                                            <input class="form-control" type="number" placeholder="<?php echo $lab;?>" disabled>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total no of Theory subjects</label>
+                                                            <input class="form-control" type="number" placeholder="<?php echo $theory;?>" disabled>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total no of Staffs Required</label>
+                                                            <input class="form-control" type="number" placeholder="<?php echo $totalstaff;?>" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="modal-footer">
+                                                    <?php
+            echo '<button type="button" class="btn btn-primary" id="print-btn"><a href="staffreq.php?dep='.urlencode($udep).'&totalstaff='.$totalstaff.'&lab='.$lab.'&theory='.$theory.'" class="text-light">Confirm</a></button>'; ?>
+                                                    
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        </div>
+        <!-- popup ends-->         
 </body>
 </html>
-

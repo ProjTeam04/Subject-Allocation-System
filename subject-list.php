@@ -42,13 +42,17 @@ $udep = $rowss['department'];
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="home.php"><i class="fa fa-home" style="font-size:24px"></i>Home <span class="sr-only">(current)</span></a>
                 </li>
-                <!-------Subject-entry--------------------------->
+                
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Send/Receive</a>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="listgeneration.php">
                         <i class="fa fa-list" style="font-size:24px" aria-hidden="true"></i>
                         Subject-List <span class="sr-only">(current)</span></a>
                 </li>
-                <!--Popup Form for subjects-->
+                <!--Popup Form for sent/Received subjects-->
 
                 <li class="nav-item button">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Sent</button>
@@ -86,7 +90,7 @@ $udep = $rowss['department'];
                                                 $rows = mysqli_fetch_assoc($sem);
                                                 $yr = $rows['year'];
                                                 $semes = $rows['sem'];
-                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and fromdepartment = '$udep' order by semester,regulation";
+                                                $qy="SELECT * from depwisepaper where acyear='$yr' and sem='$semes' and fromdepartment = '$udep' order by status DESC";
                                                 $res = mysqli_query($conn, $qy);
                                                 $number=1;
                                                 if ($res) {
@@ -195,6 +199,7 @@ $udep = $rowss['department'];
                                         </table> 
                                         <center>
                                             <button type="submit" class="btn btn-primary btn-lg" name="sendsub">Accept</button>
+                                            <button type="submit" class="btn btn-danger btn-lg" name="denysub">Deny</button>
                                             <input class="btn btn-danger btn-lg" type="reset" value="Cancel">
                                         </center><br>  
                                     </form>       
@@ -308,14 +313,14 @@ $udep = $rowss['department'];
                 $semes = $rows['sem'];
                 //$rows1 = mysqli_fetch_assoc($res));
                 if($rows['sem'] == 'even'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
-                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep' and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                 }
                 else if($rows['sem'] == 'odd'){
-                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
-                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $sql = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
+                    $sql1 = "SELECT * from subjects where category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                 }
-                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                $qy="SELECT * from electives where year='$yr' and sem='$semes' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                 $res = mysqli_query($conn, $qy);
                 $result = mysqli_query($conn, $sql);
                 $result1 = mysqli_query($conn, $sql1);
@@ -329,14 +334,14 @@ $udep = $rowss['department'];
                     $semes = $rows['sem'];
                     
                     if($rows['sem'] == 'even'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (2,4,6,8) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                     }
                     else if($rows['sem'] == 'odd'){
-                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
-                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $qry = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
+                        $qry1 = "SELECT * FROM subjects WHERE CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and semester in (1,3,5,7) and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                     }
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and CONCAT(coursetitle,coursecode,category) LIKE '%$filtervalues%' and department = '$udep' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                     $qry_run = mysqli_query($conn, $qry);
                     $qry_run1 = mysqli_query($conn, $qry1);
                     $res = mysqli_query($conn, $qy);
@@ -450,10 +455,10 @@ $udep = $rowss['department'];
     
                 
                  if(!empty($regulation) && !empty($semester)){
-                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
-                        $select1 = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                        $select = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures != 0 and practicals = 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
+                        $select1 = "SELECT * FROM subjects WHERE regulation='$regulation' and semester='$semester' and category not in ('OE1','OE2','PE1','PE2','PE3','PE4','PE5') and department = '$udep'and lectures = 0 and practicals != 0 and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                     
-                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep') order by semester,regulation";
+                    $qy="SELECT * from electives where year='$yr' and sem='$semes' and regulation='$regulation' and semester='$semester' and coursecode not in (SELECT coursecode from depwisepaper where acyear = '$yr' and sem = '$semes' and fromdepartment = '$udep' and status in ('sent','Accepted')) order by semester,regulation";
                 }
                 
                 // else if(!empty($regulation)){

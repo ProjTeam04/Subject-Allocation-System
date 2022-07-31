@@ -45,30 +45,16 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
                     <a class="nav-link text-white" href="subject-list.php"><i class="fa fa-send" style="font-size:24px"></i><span class="sr-only">(current)</span>
                         Send/Receive</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="listgeneration.php"><i class="fa fa-list" style="font-size:24px"></i><span class="sr-only">(current)</span>
+                        Subject-List</a>
+                </li>
                 
                 <li class="nav-item active">
                     <a class="nav-link text-white" href="electivelist.php"><i class="fa fa-envelope" style="font-size:24px"></i><span class="sr-only">(current)</span>
                         Electives </a>
                 </li>
 
-            
-                <!--- semester -->
-                <li class="nav-item active">
-                <form class="form-inline ml-2 ml-lg-0" method="post">
-                    <input class="form-control mr-sm-2" type="text" name="year" value="" placeholder="Academic year" required="">
-
-                    <select class="form-control" name="sem" required="">
-                                
-                                <option value="">Select semester</option>
-                                <option value="odd">Odd</option>
-                                <option value="even">Even</option>
-                            </select>
-
-
-                    <button class="btn btn-outline-success my-2 my-sm-0 btn-primary" type="submit" name="setyear">Set</button>
-                </form>
-                </li>
-                <!--- semester ends-->
             </ul>
         </div>
         <!--Search Bar-->
@@ -85,20 +71,11 @@ $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
             <div class="card-body">
             <h3><b>Academic Year</b></h3>
             <?php  
-                 if (isset($_POST['setyear'])){
-                    $year = $_POST['year'];
-                    $sem = $_POST['sem'];
-                    $INSERT1 = "INSERT Into academicyear (year,sem) values(?,?)";
-                    $stmt = $conn->prepare($INSERT1);
-                    $stmt->bind_param("is", $year,$sem);
-                    $stmt->execute();
-                    header("Location: mailpage.php");
-                    $stmt->close();
-                 }
                  $yr="SELECT * from academicyear order by sno desc limit 1";
                  $qry_run = mysqli_query($conn, $yr);
                  $row = mysqli_fetch_assoc($qry_run);
-                 echo '<h3><b>'.$row['year'].' - '.$row['sem'].' semester</b></h3>';
+                 echo '<h3><b>'.$row['year'].' - '.$row['toyear'].'<br><br>'; 
+                 echo $row['sem'].' semester</b></h3>';
     ?></div></div></center>
     <br>
     <!--- semester selection end-->

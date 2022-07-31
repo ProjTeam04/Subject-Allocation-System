@@ -1,3 +1,36 @@
+<?php
+include('db.php');
+session_start();
+if (isset($_POST['submit'])) {
+
+$username = $_POST['user'];
+$password = $_POST['pass'];
+
+//to prevent from mysqli injection
+$username = stripcslashes($username);
+$password = stripcslashes($password);
+$username = mysqli_real_escape_string($con, $username);
+$password = mysqli_real_escape_string($con, $password);
+
+$sql = "select * from adminlogin where username = '$username' and password = '$password'";
+$result = mysqli_query($con, $sql);
+$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$count = mysqli_num_rows($result);
+
+if($count == 1){
+    $_SESSION['username'] = $username;
+    header("Location: dashboard.php");
+}
+else{
+    echo"<div class='form'><br><br>
+               <center>
+                  <h3>Incorrect Username/password</h3><br/>
+                  </center>
+                  </div>";
+}
+}
+?>
+
 <html>
 
 <head>
@@ -11,7 +44,7 @@
         <h1>
             <center>Admin Login</center>
         </h1>
-        <form name="f1" action="authentication.php" onsubmit="return validation()" method="POST">
+        <form name="f1" action="" onsubmit="return validation()" method="POST">
             <center>
                 <div class="txt_field">
                     <input type="text" id="user" name="user" required="">
@@ -21,12 +54,13 @@
                     <input type="password" id="pass" name="pass" required="">
                     <label>Password</label>
                 </div>
+
+                <input type="submit" name="submit" value="Login">
+
                 <div class="signup_link">
                     <b> Are you a User? </b>
                     <a href="login.php">Login Here</a>
                 </div>
-                <input type="submit" name="submit" value="Login">
-
             </center>
         </form>
     </div>
